@@ -1,0 +1,4 @@
+/bin/
+# don't include Eclipse stuff
+.classpath
+.project
