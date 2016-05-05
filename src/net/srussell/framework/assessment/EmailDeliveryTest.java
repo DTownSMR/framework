@@ -81,8 +81,8 @@ public class EmailDeliveryTest extends TestCase
 
 
     /**
-     * @throws MessagingException 
-     * @throws AddressException 
+     * @throws MessagingException - exception thrown by Messaging classes
+     * @throws AddressException - thrown when there is a malformed address
      */
     public void testBuildMessage() throws AddressException, MessagingException
     {

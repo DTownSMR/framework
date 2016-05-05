@@ -11,7 +11,7 @@ import net.srussell.framework.assessment.Assessment;
 /**
  * Basic application exception. Application exceptions are based on RuntimeException to eliminate the need to clutter method signatures
  * with complex throws clauses. 
- * <br/><br/>
+ * <br><br>
  * Localized non-runtime exceptions should only be used when it's expected that the call <b><i>can AND SHOULD</i></b>  handle the exception immediately.
  * If there's a possibility that the caller won't/can't handle an exception, then an exception based off of this base class should be
  * used to allow application exceptions to percolate to the highest application level.

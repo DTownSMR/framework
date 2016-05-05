@@ -99,8 +99,8 @@ public class Assessment
     /**
      * constructor that accepts the assessment text and an alternate delivery delegate object
      * 
-     * @param msg 
-     * @param delegate
+     * @param msg String - assessment message 
+     * @param delegate AssessmentDeliverDelegate - delivery delegate
      */
     public Assessment( String msg, AssessmentDeliverDelegate delegate )
     {

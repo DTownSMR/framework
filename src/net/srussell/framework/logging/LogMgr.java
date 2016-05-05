@@ -39,6 +39,9 @@ public class LogMgr
 
     /**
      * constructor for when logging a classes revision number as well as it's name
+     * 
+     * @param className String - class name for this logger instance
+     * @param revision RevisionNumberI - instance of some vcs revision number
      */
     public LogMgr( String className, RevisionNumberI revision )
     {
@@ -111,6 +114,7 @@ public class LogMgr
      * 
      * @param methodName String - the name of the method making the call
      * @param message String - the message to write to the log
+     * @param exception Throwable - causing exception
      */
     public void warn( String methodName, String message, Throwable exception )
     {
@@ -177,6 +181,7 @@ public class LogMgr
      * 
      * @param methodName String - the name of the method making the call
      * @param message String - the message to write to the log
+     * @param exception Throwable - causing exception
      */
     public void info( String methodName, String message, Throwable exception )
     {
@@ -225,6 +230,7 @@ public class LogMgr
      * 
      * @param methodName String - the name of the method making the call
      * @param message String - the message to write to the log
+     * @param exception Throwable - causing exception
      */
     public void debug( String methodName, String message, Throwable exception )
     {
@@ -303,6 +309,8 @@ public class LogMgr
 
     /**
      * convenience method for knowing if we're at warn level
+     * 
+     * @return boolean - indicator of current setting
      */
     public boolean isWarnEnabled()
     {
@@ -313,6 +321,8 @@ public class LogMgr
 
     /**
      * convenience method for knowing if we're at error level
+     * 
+     * @return boolean - indicator of current setting
      */
     public boolean isErrorEnabled()
     {
@@ -323,6 +333,8 @@ public class LogMgr
 
     /**
      * convenience method for knowing if we're at debug level
+     * 
+     * @return boolean - indicator of current setting
      */
     public boolean isInfoEnabled()
     {
@@ -333,6 +345,8 @@ public class LogMgr
 
     /**
      * convenience method for knowing if we're at debug level
+     * 
+     * @return boolean - indicator of current setting
      */
     public boolean isDebugEnabled()
     {

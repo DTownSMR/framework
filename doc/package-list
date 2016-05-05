@@ -1,1 +1,10 @@
+net.srussell.framework
+net.srussell.framework.assessment
+net.srussell.framework.exception
+net.srussell.framework.logging
 net.srussell.framework.singleton
+net.srussell.framework.utility.collection
+net.srussell.framework.utility.io
+net.srussell.framework.utility.string
+net.srussell.framework.utility.string.vcs
+net.srussell.framework.utility.string.vcs.subversion

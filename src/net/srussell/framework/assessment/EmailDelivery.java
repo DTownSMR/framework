@@ -70,11 +70,12 @@ public class EmailDelivery implements AssessmentDeliverDelegate, Serializable
 
     /**
      * this method allows specification of recipient, originator, subject and smtphost
-     * @param toAddress email recipient
-     * @param subject email subject
-     * @param fromAddress email originator
-     * @param smtpHost mailer
-     * @param password
+     * @param toAddress String - email recipient
+     * @param subject String - email subject
+     * @param fromAddress String - email originator
+     * @param smtpHost String - smtp mail host
+     * @param port String - smtp port to use
+     * @param password String - user password
      * @since 0.0.1
      */
     public EmailDelivery( String toAddress, String subject, String fromAddress, String smtpHost, String port, String password )
@@ -91,11 +92,11 @@ public class EmailDelivery implements AssessmentDeliverDelegate, Serializable
 
     /**
      * this method allows specification of recipient, originator, subject and smtphost
-     * @param toAddress email recipient
-     * @param subject email subject
-     * @param fromAddress email originator
-     * @param smtpHost mailer
-     * @param password
+     * @param toAddress String - email recipient
+     * @param subject String - email subject
+     * @param fromAddress String - email originator
+     * @param smtpHost String - smtp mail host
+     * @param password String - user password
      * @since 0.0.1
      */
     public EmailDelivery( String toAddress, String subject, String fromAddress, String smtpHost, String password )
@@ -159,7 +160,7 @@ public class EmailDelivery implements AssessmentDeliverDelegate, Serializable
 
     /**
      * minimal constructor that supplies default values for from, subject, and smtp server.
-     * <br/>
+     * <br>
      * it uses the to address as the from address and "localhost" as the SMTP server
      * @param toAddress String - email recipient
      * @since 1.0
