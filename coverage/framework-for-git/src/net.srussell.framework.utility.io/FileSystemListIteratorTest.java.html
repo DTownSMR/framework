@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>FileSystemListIteratorTest.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (5) (May 5, 2016 1:25:56 PM)</a> &gt; <a href="../../index.html" class="el_group">framework-for-git</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.srussell.framework.utility.io</a> &gt; <span class="el_source">FileSystemListIteratorTest.java</span></div><h1>FileSystemListIteratorTest.java</h1><pre class="source lang-java linenums">/**
+ * (c) Copyright  Scott M. Russell.  2010
+ *     All rights reserved.
+ */
+
+package net.srussell.framework.utility.io;
+
+import java.io.File;
+
+import junit.framework.TestCase;
+import net.srussell.framework.logging.LogMgr;
+
+/**
+ */
+<span class="fc" id="L15">public class FileSystemListIteratorTest extends TestCase</span>
+{
+
+    // auto-generated logging object
+<span class="fc" id="L19">    private static LogMgr logger = new LogMgr( &quot;net.srussell.framework.utility.io.FileSystemListIteratorTest&quot; );</span>
+    /**
+     * path to directory to use for JUnit testing
+     */
+<span class="fc" id="L23">    private static final String JUNIT_TEST_PATH = &quot;./src/net/srussell/framework/utility/io/junit/subdirectory&quot;;</span>
+
+<span class="fc" id="L25">    FileSystemListIterator fsli = null;</span>
+
+
+
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#setUp()
+     */
+    @Override
+    protected void setUp() throws Exception
+    {
+<span class="fc" id="L35">        super.setUp();</span>
+
+<span class="fc" id="L37">        FileListing fl = new FileListing( JUNIT_TEST_PATH );</span>
+<span class="fc" id="L38">        fsli = fl.iterator();</span>
+<span class="fc" id="L39">    }</span>
+
+
+
+    /**
+     * Test method for {@link net.srussell.framework.utility.io.FileSystemListIterator#hasNext()}.
+     */
+    public void testHasNext()
+    {
+<span class="fc" id="L48">        assertTrue( &quot;should have next&quot;, fsli.hasNext() );</span>
+<span class="fc" id="L49">    }</span>
+
+
+
+    /**
+     * Test method for {@link net.srussell.framework.utility.io.FileSystemListIterator#next()}.
+     */
+    public void testNext()
+    {
+<span class="fc" id="L58">        File next = fsli.next();</span>
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">        assertTrue( &quot;should exist&quot;, next != null );</span>
+<span class="fc" id="L60">        assertEquals( &quot;wrong file received&quot;, &quot;junitTest.file&quot;, next.getName() );</span>
+<span class="pc bpc" id="L61" title="1 of 2 branches missed.">        assertTrue( &quot;should be done&quot;, !fsli.hasNext() );</span>
+<span class="fc" id="L62">    }</span>
+
+
+
+    /**
+     * Test method for {@link net.srussell.framework.utility.io.FileSystemListIterator#remove()}.
+     */
+    public void testRemove()
+    {
+<span class="fc" id="L71">        assertEquals( &quot;should have something&quot;, 1, fsli.size() );</span>
+<span class="fc" id="L72">        fsli.next();</span>
+<span class="fc" id="L73">        fsli.remove();</span>
+<span class="fc" id="L74">        assertEquals( &quot;shouldn't have anything left&quot;, 0, fsli.size() );</span>
+
+<span class="fc" id="L76">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>AllTests (5) (May 5, 2016 1:25:56 PM)</div></body></html>

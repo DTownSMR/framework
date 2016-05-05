@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>FileAndDirectoryListingTest.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (5) (May 5, 2016 1:25:56 PM)</a> &gt; <a href="../../index.html" class="el_group">framework-for-git</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.srussell.framework.utility.io</a> &gt; <span class="el_source">FileAndDirectoryListingTest.java</span></div><h1>FileAndDirectoryListingTest.java</h1><pre class="source lang-java linenums">/**
+ * (c) Copyright  Scott M. Russell.  2010
+ *     All rights reserved.
+ */
+
+package net.srussell.framework.utility.io;
+
+import junit.framework.TestCase;
+import net.srussell.framework.logging.LogMgr;
+
+/*
+ * Created by: scott on May 19, 2014 2:13:50 PM for framework::net.srussell.framework.utility.io
+ */
+
+/**
+ * TODO CODE REVIEW FAILURE! -- must add description here
+ *
+ *    @author scott
+ */
+<span class="fc" id="L20">public class FileAndDirectoryListingTest extends TestCase</span>
+{
+    /**
+     * path to directory to use for JUnit testing
+     */
+    private static final String JUNIT_TEST_PATH = &quot;./src/net/srussell/framework/utility/io/junit/subdirectory&quot;;
+
+    // auto-generated logging object
+<span class="fc" id="L28">    private static LogMgr logger = new LogMgr( &quot;net.srussell.framework.utility.io.FileAndDirectoryListingTest&quot; );</span>
+
+<span class="fc" id="L30">    FileAndDirectoryListing fdl = null;</span>
+
+
+
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#setUp()
+     */
+    @Override
+    protected void setUp() throws Exception
+    {
+<span class="fc" id="L40">        super.setUp();</span>
+
+<span class="fc" id="L42">        fdl = new FileAndDirectoryListing( JUNIT_TEST_PATH );</span>
+<span class="fc" id="L43">    }</span>
+
+
+
+    /* test contains */
+    public void testContains()
+    {
+<span class="fc" id="L50">        fdl.dumpListing();</span>
+<span class="fc" id="L51">        assertTrue( &quot;expected directory missing&quot;, fdl.contains( &quot;subsubdirectory&quot; ) );</span>
+<span class="fc" id="L52">        assertTrue( &quot;expected file missing&quot;, fdl.contains( &quot;junitTest.file&quot; ) );</span>
+<span class="fc" id="L53">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>AllTests (5) (May 5, 2016 1:25:56 PM)</div></body></html>

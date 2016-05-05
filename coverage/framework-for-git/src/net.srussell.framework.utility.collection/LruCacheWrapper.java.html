@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>LruCacheWrapper.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (5) (May 5, 2016 1:25:56 PM)</a> &gt; <a href="../../index.html" class="el_group">framework-for-git</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.srussell.framework.utility.collection</a> &gt; <span class="el_source">LruCacheWrapper.java</span></div><h1>LruCacheWrapper.java</h1><pre class="source lang-java linenums">/**
+ * (c) Copyright  Scott M. Russell.  2010
+ *     All rights reserved.
+ */
+
+package net.srussell.framework.utility.collection;
+
+import net.srussell.framework.singleton.SingletonFactoryFunctor;
+
+/*
+ * Created by: scott on Oct 16, 2013 6:02:13 PM for framework::net.srussell.framework.utility.collection
+ */
+
+/**
+ * A static container for a singleton instance of LruCache
+ */
+<span class="nc" id="L17">final public class LruCacheWrapper</span>
+{
+    /**
+     * A reference to a possibly alternate factory.
+     */
+<span class="fc" id="L22">    static private SingletonFactoryFunctor factory = null;</span>
+
+    /**
+     * A reference to the current instance.
+     */
+<span class="fc" id="L27">    static private LruCache instance = null;</span>
+
+
+
+    /**
+     * This is the default factory method.
+     * It is called to create a new LruCache when
+     * a new instance is needed and _factory is null.
+     */
+    static private LruCache makeInstance()
+    {
+<span class="nc" id="L38">        return new LruCache( 0 ); // better not use this! ;-)</span>
+    }
+
+
+
+    /**
+     * This is the accessor for the LruCache.
+     */
+    static public synchronized LruCache instance()
+    {
+<span class="fc bfc" id="L48" title="All 2 branches covered.">        if ( null == instance )</span>
+        {
+<span class="pc bpc" id="L50" title="1 of 2 branches missed.">            instance = ( null == factory ) ? makeInstance() : (LruCache)factory.makeInstance();</span>
+        }
+<span class="fc" id="L52">        return instance;</span>
+    }
+
+
+
+    /**
+     * Sets the factory method used to create new instances.
+     * You can set the factory method to null to use the default method.
+     * @param factory SingletonFactoryFunctor - The LruCache factory
+     */
+    static public synchronized void setFactory( SingletonFactoryFunctor newFactory )
+    {
+<span class="fc" id="L64">        factory = newFactory;</span>
+<span class="fc" id="L65">    }</span>
+
+
+
+    /**
+     * Sets the current LruCache instance.
+     * You can set this to null to force a new instance to be created the
+     * next time instance() is called.
+     * @param instance LruCache - The LruCache instance to use.
+     */
+    static public synchronized void setInstance( LruCache newInstance )
+    {
+<span class="nc" id="L77">        instance = newInstance;</span>
+<span class="nc" id="L78">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>AllTests (5) (May 5, 2016 1:25:56 PM)</div></body></html>

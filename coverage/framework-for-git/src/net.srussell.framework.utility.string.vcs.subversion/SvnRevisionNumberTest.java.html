@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>SvnRevisionNumberTest.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (5) (May 5, 2016 1:25:56 PM)</a> &gt; <a href="../../index.html" class="el_group">framework-for-git</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.srussell.framework.utility.string.vcs.subversion</a> &gt; <span class="el_source">SvnRevisionNumberTest.java</span></div><h1>SvnRevisionNumberTest.java</h1><pre class="source lang-java linenums">/**
+ * (c) Copyright  Scott M. Russell.  2010
+ *     All rights reserved.
+ */
+
+package net.srussell.framework.utility.string.vcs.subversion;
+
+import junit.framework.TestCase;
+
+/**
+ * test the SvnRevisionNumber class
+ */
+<span class="fc" id="L13">public class SvnRevisionNumberTest extends TestCase</span>
+{
+
+    /**
+     * working revision number
+     */
+<span class="fc" id="L19">    private SvnRevisionNumber srn = null;</span>
+
+
+
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#setUp()
+     */
+    @Override
+    protected void setUp() throws Exception
+    {
+<span class="fc" id="L29">        super.setUp();</span>
+
+<span class="fc" id="L31">        srn = new SvnRevisionNumber( &quot;$Rev: 01 $&quot; );</span>
+<span class="fc" id="L32">    }</span>
+
+
+
+    /**
+     * Test method for {@link net.srussell.framework.utility.string.subversion.SvnRevisionNumber#SvnRevisionNumber(java.lang.String)}.
+     */
+    public void testSvnRevisionNumberString()
+    {
+        // make sure a null value is handled correctly
+        try
+        {
+<span class="nc" id="L44">            srn = new SvnRevisionNumber( null );</span>
+<span class="nc" id="L45">            fail( &quot;exception wasn't thrown for null value&quot; );</span>
+<span class="nc" id="L46">        }</span>
+<span class="fc" id="L47">        catch( IllegalArgumentException e )</span>
+        {
+            // this is correct, null isn't valid for the constructor
+        }
+
+<span class="fc" id="L52">    }</span>
+
+
+
+    /**
+     * Test method for {@link net.srussell.framework.utility.string.subversion.SvnRevisionNumber#getRevision()}.
+     */
+    public void testGetRevision()
+    {
+<span class="fc" id="L61">        assertEquals( &quot;wrong value returned&quot;, &quot;01&quot;, srn.getRevision() );</span>
+<span class="fc" id="L62">    }</span>
+
+
+
+    /**
+     * Test method for {@link net.srussell.framework.utility.string.subversion.SvnRevisionNumber#parseSvnRevisionProperty(java.lang.String)}.
+     */
+    public void testParseSvnRevision()
+    {
+        // make sure invalid (re: non-parsable) values is handled correctly
+        // assumed format is:   &quot;$Rev: 46 $&quot;
+        //      where Rev can be either &quot;Rev&quot;, &quot;Revision&quot;, or &quot;LastChangedRevision&quot;  
+        try
+        {
+<span class="nc" id="L76">            srn.parseSvnRevisionProperty( &quot;will-not-work&quot; );</span>
+<span class="nc" id="L77">            fail( &quot;exception wasn't thrown for non-parseable value&quot; );</span>
+<span class="nc" id="L78">        }</span>
+<span class="fc" id="L79">        catch( IllegalArgumentException e )</span>
+        {
+            // this is correct, null isn't valid for the constructor
+        }
+
+        // make sure non-numeric revision numbers are detected
+        try
+        {
+<span class="nc" id="L87">            srn.parseSvnRevisionProperty( &quot;$Rev: nn $&quot; );</span>
+<span class="nc" id="L88">            fail( &quot;didn't detect a non-numberic revsion number&quot; );</span>
+<span class="nc" id="L89">        }</span>
+<span class="fc" id="L90">        catch( IllegalArgumentException e )</span>
+        {
+            // this is correct, it's non number
+        }
+<span class="fc" id="L94">    }</span>
+
+
+
+    /**
+     * Test method for {@link net.srussell.framework.utility.string.subversion.SvnRevisionNumber#doesNotAppearValid(java.lang.String)}.
+     */
+    public void testDoesNotAppearValid()
+    {
+<span class="fc" id="L103">        assertTrue( &quot;didn't detect invalid entry&quot;, srn.doesNotAppearValid( &quot;$Rev: 46 &quot; ) );</span>
+<span class="fc" id="L104">        assertTrue( &quot;didn't detect invalid entry&quot;, srn.doesNotAppearValid( &quot;Rev: 46 $&quot; ) );</span>
+<span class="fc" id="L105">        assertTrue( &quot;didn't detect invalid entry&quot;, srn.doesNotAppearValid( &quot;$Rev 46 $&quot; ) );</span>
+<span class="fc" id="L106">        assertTrue( &quot;didn't detect invalid entry&quot;, srn.doesNotAppearValid( &quot;$Rev:46$&quot; ) );</span>
+<span class="fc" id="L107">        assertTrue( &quot;didn't detect invalid entry&quot;, srn.doesNotAppearValid( &quot;$Rev: 46$&quot; ) );</span>
+<span class="fc" id="L108">        assertTrue( &quot;didn't detect invalid entry&quot;, srn.doesNotAppearValid( &quot;$Rev:46 $&quot; ) );</span>
+
+<span class="fc" id="L110">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>AllTests (5) (May 5, 2016 1:25:56 PM)</div></body></html>

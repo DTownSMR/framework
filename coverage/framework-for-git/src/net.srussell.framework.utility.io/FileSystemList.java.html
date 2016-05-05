@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>FileSystemList.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (5) (May 5, 2016 1:25:56 PM)</a> &gt; <a href="../../index.html" class="el_group">framework-for-git</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.srussell.framework.utility.io</a> &gt; <span class="el_source">FileSystemList.java</span></div><h1>FileSystemList.java</h1><pre class="source lang-java linenums">/**
+ * (c) Copyright  Scott M. Russell.  2010
+ *     All rights reserved.
+ */
+
+package net.srussell.framework.utility.io;
+
+import java.io.File;
+import java.io.FileFilter;
+
+import net.srussell.framework.logging.LogMgr;
+
+/**
+ */
+public abstract class FileSystemList
+{
+
+    // auto-generated logging object
+<span class="fc" id="L19">    private static LogMgr logger = new LogMgr( &quot;net.srussell.framework.utility.io.FileSystemList&quot; );</span>
+
+    /**
+     * the File created for this abstract path
+     */
+<span class="pc" id="L24">    private File targetPath = null;</span>
+
+    /**
+     * the File list for this abstract path
+     */
+<span class="pc" id="L29">    private File[] targetList = null;</span>
+
+
+
+    /**
+     * Extender's of this class implement this abstract method to supply base code with the implementors desired FileFilter 
+     *
+     * @return FileFilter - desired FileFilter by extending class
+     */
+    protected abstract FileFilter getFileFilter();
+
+
+
+    /**
+     * base constructor
+     * 
+     * @param pathName String - an abstract path name
+     */
+    public FileSystemList( String pathName )
+    {
+<span class="fc" id="L49">        super();</span>
+
+<span class="fc" id="L51">        logger.debug( &quot;DirectoryListing&quot;, &quot;File object created for[&quot; + pathName + &quot;]&quot; );</span>
+<span class="fc" id="L52">        File filePathName = new File( pathName );</span>
+
+<span class="fc" id="L54">        init( filePathName );</span>
+<span class="fc" id="L55">    }</span>
+
+
+
+    /**
+     * constructor when a File object is already created
+     * 
+     * @param filePathName File - an abstract path
+     */
+    public FileSystemList( File filePathName )
+    {
+<span class="nc" id="L66">        super();</span>
+
+<span class="nc" id="L68">        init( filePathName );</span>
+<span class="nc" id="L69">    }</span>
+
+
+
+    /**
+     * init this object at constructor time so it's ready to be used.
+     *
+     * @param filePathName File - File object to files system list target
+     */
+    private void init( File filePathName )
+    {
+<span class="fc" id="L80">        logger.debug( &quot;DirectoryListing&quot;, &quot;File object: exists[&quot; + filePathName.exists() + &quot;] isDirectory[&quot; + filePathName.isDirectory() + &quot;] &quot; );</span>
+
+<span class="fc" id="L82">        this.setTargetPath( filePathName );</span>
+<span class="fc" id="L83">        this.setTargetList( getTargetPath().listFiles( this.getFileFilter() ) );</span>
+<span class="fc" id="L84">    }</span>
+
+
+
+    /**
+     * return the size of the file system list
+     *
+     * @return int - the number of entries in this list
+     */
+    public int size()
+    {
+<span class="nc" id="L95">        return this.getTargetList().length;</span>
+    }
+
+
+
+    /**
+     * determine if a specified file name exists in the list of files.
+     *
+     * @param name String - file name to look for
+     * @return boolean - true/false indicator if the filename matches a file in the list.
+     */
+    protected boolean contains( String name )
+    {
+<span class="fc" id="L108">        logger.entry( &quot;contains&quot; );</span>
+
+<span class="fc" id="L110">        boolean found = false;</span>
+
+<span class="fc" id="L112">        File[] list = this.getTargetList();</span>
+
+<span class="pc bpc" id="L114" title="2 of 4 branches missed.">        if ( list != null &amp;&amp; list.length &gt; 0 )</span>
+        {
+<span class="fc bfc" id="L116" title="All 2 branches covered.">            for ( int i = 0; i &lt; list.length; i++ )</span>
+            {
+<span class="fc bfc" id="L118" title="All 2 branches covered.">                if ( list[i].getName().equals( name ) )</span>
+                {
+<span class="fc" id="L120">                    found = true;</span>
+                }
+            }
+<span class="fc" id="L123">        }</span>
+        else
+        {
+<span class="nc" id="L126">            logger.debug( &quot;contains&quot;, &quot;list empty...can't look for[&quot; + name + &quot;]&quot; );</span>
+        }
+
+<span class="fc" id="L129">        logger.exit( &quot;contains&quot; );</span>
+<span class="fc" id="L130">        return found;</span>
+    }
+
+
+
+    /**
+     * Returns the targetPath
+     *
+     * @return File - the targetPath property.
+     */
+    protected File getTargetPath()
+    {
+<span class="fc" id="L142">        return this.targetPath;</span>
+    }
+
+
+
+    /**
+     * Sets the targetPath
+     *
+     * @param targetPath File - new value for the targetPath property.
+     */
+    protected void setTargetPath( File targetPath )
+    {
+<span class="fc" id="L154">        logger.debug( &quot;getTargetPath&quot;, &quot;setting targetPath[&quot; + targetPath.getName() + &quot;]&quot; );</span>
+<span class="fc" id="L155">        this.targetPath = targetPath;</span>
+<span class="fc" id="L156">    }</span>
+
+
+
+    /**
+     * Returns the targetList
+     *
+     * @return File[] - the targetList property.
+     */
+    private File[] getTargetList()
+    {
+
+<span class="fc" id="L168">        return this.targetList;</span>
+    }
+
+
+
+    /**
+     * Sets the targetList
+     *
+     * @param targetList File[] - new value for the targetList property.
+     */
+    private void setTargetList( File[] targetList )
+    {
+
+<span class="fc" id="L181">        this.targetList = targetList;</span>
+<span class="fc" id="L182">    }</span>
+
+
+
+    /**
+     * get the File list for this abstract path
+     *
+     * @return File[] - array of File objects
+     */
+    public File[] getList()
+    {
+<span class="fc" id="L193">        return this.targetList;</span>
+    }
+
+
+
+    /**
+     * obtain an iterator over a collection for this file system list
+     *
+     * @return FileSystemListIterator - an iterator for this file system list
+     */
+    public FileSystemListIterator iterator()
+    {
+<span class="fc" id="L205">        return new FileSystemListIterator( this );</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>AllTests (5) (May 5, 2016 1:25:56 PM)</div></body></html>

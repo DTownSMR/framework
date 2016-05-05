@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>DirectoryListing.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (5) (May 5, 2016 1:25:56 PM)</a> &gt; <a href="../../index.html" class="el_group">framework-for-git</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.srussell.framework.utility.io</a> &gt; <span class="el_source">DirectoryListing.java</span></div><h1>DirectoryListing.java</h1><pre class="source lang-java linenums">/**
+ * (c) Copyright  Scott M. Russell.  2010
+ *     All rights reserved.
+ */
+
+package net.srussell.framework.utility.io;
+
+import java.io.File;
+import java.io.FileFilter;
+
+import net.srussell.framework.logging.LogMgr;
+
+/**
+ * DirectoryList is a specialized version of a directory list. One that contains ONLY sub-directories. 
+ * 
+ * Any normal files in the directory are ignored.  
+ */
+public class DirectoryListing extends FileSystemList
+{
+    // auto-generated logging object
+<span class="fc" id="L21">    private static LogMgr logger = new LogMgr( &quot;net.srussell.framework.utility.io.DirectoryListing&quot; );</span>
+
+
+
+    /**
+     * base constructor that accepts a pathname to the desired directory 
+     * 
+     * @param pathName String - an abstract pathname
+     */
+    public DirectoryListing( String pathName )
+    {
+<span class="fc" id="L32">        super( pathName );</span>
+<span class="fc" id="L33">    }</span>
+
+
+
+    /**
+     * constructor that accepts a File object representing the desired directory 
+     * 
+     * @param filePath File - an abstract path
+     */
+    public DirectoryListing( File filePath )
+    {
+<span class="nc" id="L44">        super( filePath );</span>
+<span class="nc" id="L45">    }</span>
+
+
+
+    /**
+     * check for the existence of a file in this file listing
+     *
+     * @param fileName String - name of a file to check 
+     * @return boolean - true/false indicator if the file present in the list 
+     */
+    @Override
+    public boolean contains( String directoryName )
+    {
+<span class="fc" id="L58">        return super.contains( directoryName );</span>
+    }
+
+
+
+    /* (non-Javadoc)
+     * @see net.srussell.framework.utility.io.FileSystemList#getFileFilter()
+     */
+    @Override
+    protected FileFilter getFileFilter()
+    {
+<span class="fc" id="L69">        logger.debug( &quot;getFileFilter&quot;, &quot;using new DirectoryOnlyFilter()&quot; );</span>
+<span class="fc" id="L70">        return new DirectoryOnlyFilter();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>AllTests (5) (May 5, 2016 1:25:56 PM)</div></body></html>

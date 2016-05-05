@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>Assessment.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (5) (May 5, 2016 1:25:56 PM)</a> &gt; <a href="../../index.html" class="el_group">framework-for-git</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.srussell.framework.assessment</a> &gt; <span class="el_source">Assessment.java</span></div><h1>Assessment.java</h1><pre class="source lang-java linenums">/**
+ * (c) Copyright  Scott M. Russell.  2010
+ *     All rights reserved.
+ */
+
+
+package net.srussell.framework.assessment;
+
+import java.security.InvalidParameterException;
+import java.util.Date;
+
+import net.srussell.framework.logging.LogMgr;
+import net.srussell.framework.utility.string.vcs.subversion.SvnRevisionNumber;
+
+/**
+ * An Assessment encapsulates a short detailed account of an incident that happens in the system and provides a means to control it's delivery. 
+ * The encapsulation provides for consistent formatting and standard, application wide, way(s) of delivery. The &lt;code&gt;deliver()&lt;/code&gt; method is 
+ * used to control exactly when the assessment is delivered.
+ * &lt;br&gt;&lt;br&gt;
+ * A default means of delivery is provided via the standard delivery object that writes to stdout. 
+ * &lt;br&gt;&lt;br&gt;
+ * The default delivery can be overridden by an alternate delivery 
+ * object specified in a &lt;code&gt;setDeliverDelegate()&lt;/code&gt; method call. See &lt;code&gt;EmailDelivery&lt;/code&gt; as an example implementation of how to 
+ * override delivery.  
+ * &lt;br&gt;&lt;br&gt;
+ *
+ * @see #setDeliverDelegate(AssessmentDeliverDelegate)
+ * @see EmailDelivery
+ * @version 1.0
+ * @author Scott Russell
+ * @since 1.0
+ * 
+ *
+ * &lt;br&gt;&lt;br&gt;
+ * &lt;center&gt;
+ * &lt;a href=&quot;http://www.srussell.net&quot;&gt; Copyright &amp;copy; Scott M. Russell, 2010&lt;/a&gt;
+ * &lt;/center&gt;
+ */
+public class Assessment
+{
+    // last revision
+<span class="fc" id="L42">    private final static SvnRevisionNumber revisionNumber = new SvnRevisionNumber( &quot;$LastChangedRevision: 50 $&quot; );</span>
+    // standard logging 
+<span class="fc" id="L44">    private static LogMgr logger = new LogMgr( &quot;net.srussell.framework.assessment.Assessment&quot;, revisionNumber );</span>
+
+    /**
+     * the text of the assessment
+     */
+<span class="pc" id="L49">    protected StringBuffer assessmentText = null;</span>
+
+    /**
+     * prefix associated with this assessment
+     */
+<span class="pc" id="L54">    protected String prefix = &quot;[assessment] &quot;;</span>
+
+    /**
+     * true/false indicator if a time stamp should  be used. The default is YES
+     */
+<span class="pc" id="L59">    protected boolean isTimeStampDesired = true;</span>
+    public static final boolean USE_TIME_STAMP = true;
+<span class="fc" id="L61">    public static final boolean NO_TIME_STAMP = false;</span>
+
+    /**
+     * Date object to hold date/time stamp for this assessment
+     */
+<span class="pc" id="L66">    protected Date now = null;</span>
+
+    /**
+     * this assessments delivery delegate. The default is DefaultAssessmentDelivery
+     */
+<span class="pc" id="L71">    protected AssessmentDeliverDelegate delegate = new DefaultAssessmentDelivery();</span>
+
+
+
+    /**
+     * hide the default constructor so no extending classes can create one because it doesn't make sense to create a non-specified assessment object
+     */
+<span class="nc" id="L78">    private Assessment()</span>
+    {
+<span class="nc" id="L80">        initialize();</span>
+<span class="nc" id="L81">    }</span>
+
+
+
+    /**
+     * base constructor that accepts the text info of the assessment
+     * 
+     * @param msg String - the text data of the  assessment  
+     */
+    public Assessment( String msg )
+    {
+<span class="fc" id="L92">        super();</span>
+<span class="fc" id="L93">        setAssessmentText( msg );</span>
+<span class="fc" id="L94">        initialize();</span>
+<span class="fc" id="L95">    }</span>
+
+
+
+    /**
+     * constructor that accepts the assessment text and an alternate delivery delegate object
+     * 
+     * @param msg 
+     * @param delegate
+     */
+    public Assessment( String msg, AssessmentDeliverDelegate delegate )
+    {
+<span class="fc" id="L107">        super();</span>
+<span class="fc" id="L108">        this.setAssessmentText( msg );</span>
+<span class="fc" id="L109">        this.setDeliverDelegate( delegate );</span>
+<span class="fc" id="L110">        this.initialize();</span>
+<span class="fc" id="L111">    }</span>
+
+
+
+    public Assessment( String msg, boolean useTimeStamp )
+    {
+<span class="fc" id="L117">        super();</span>
+<span class="fc" id="L118">        this.setAssessmentText( msg );</span>
+<span class="fc" id="L119">        this.setIsTimeStampDesired( useTimeStamp );</span>
+<span class="fc" id="L120">        this.initialize();</span>
+<span class="fc" id="L121">    }</span>
+
+
+
+    public Assessment( String msg, AssessmentDeliverDelegate delegate, boolean useTimeStamp )
+    {
+<span class="fc" id="L127">        super();</span>
+<span class="fc" id="L128">        this.setAssessmentText( msg );</span>
+<span class="fc" id="L129">        this.setDeliverDelegate( delegate );</span>
+<span class="fc" id="L130">        this.setIsTimeStampDesired( useTimeStamp );</span>
+<span class="fc" id="L131">        this.initialize();</span>
+<span class="fc" id="L132">    }</span>
+
+
+
+    /**
+     * The initialize method is designed to be called from a constructor. Controls the flow of the instantiation of an Assessment object.
+     */
+    protected void initialize()
+    {
+<span class="fc" id="L141">        logger.entry( &quot;initialize&quot; );</span>
+
+<span class="fc bfc" id="L143" title="All 2 branches covered.">        if ( this.isTimeStampDesired() )</span>
+        {
+<span class="fc" id="L145">            logger.debug( &quot;initialize&quot;, &quot;time stamps are desired...calling setNow(null)...&quot; );</span>
+<span class="fc" id="L146">            setNow( null ); // grab the current date/time as a default</span>
+        }
+
+<span class="fc" id="L149">        logger.debug( &quot;initialize&quot;, &quot;calling extension_init()...&quot; );</span>
+<span class="fc" id="L150">        extension_init();</span>
+
+<span class="fc" id="L152">        logger.exit( &quot;initialize&quot; );</span>
+<span class="fc" id="L153">    }</span>
+
+
+
+    /**
+     * This method is empty in this base class but allows extending classes an easy method to plug into the initialize process without having to
+     * be concerned with all portions of the initialize process.
+     */
+    protected void extension_init()
+    {
+<span class="fc" id="L163">    }</span>
+
+
+
+    /**
+     * provide a logical toString() method
+     */
+    @Override
+    public String toString()
+    {
+<span class="fc" id="L173">        return ( this.getAssessmentText().toString() );</span>
+    }
+
+
+
+    /**
+     * The deliver function is used to present the assessment information. In the base class a default delivery delegate is used. 
+     * 
+     * examples of alternate assessment deliveries are: standard java logging sub-system, mail message, a text file, a database, etc.
+
+     * @since 1.0
+     */
+    public void deliver()
+    {
+<span class="fc" id="L187">        this.getDelegate().delegatedDeliver( this );</span>
+
+<span class="fc" id="L189">        return;</span>
+    }
+
+
+
+    /**
+     * This method builds the assessment data string and prefixes the text with the date/time string.  
+     * 
+     * @return String - the built up assessment text
+     */
+    public String buildAsseessment()
+    {
+<span class="fc" id="L201">        logger.entry( &quot;buildAsseessment&quot; );</span>
+
+<span class="fc" id="L203">        StringBuffer theAssessmentText = new StringBuffer( 1024 );</span>
+
+<span class="fc bfc" id="L205" title="All 2 branches covered.">        if ( this.isTimeStampDesired() )</span>
+        {
+<span class="fc" id="L207">            Date myNow = this.getNow();</span>
+<span class="fc" id="L208">            logger.debug( &quot;buildAsseessment&quot;, &quot;using date[&quot; + myNow.toString() + &quot;]&quot; );</span>
+<span class="fc" id="L209">            theAssessmentText.append( myNow.toString() + &quot;: &quot; );</span>
+        }
+<span class="fc" id="L211">        theAssessmentText.append( selectMsg() );</span>
+
+<span class="fc" id="L213">        logger.exit( &quot;buildAsseessment&quot; );</span>
+<span class="fc" id="L214">        return theAssessmentText.toString();</span>
+    }
+
+
+
+    /**
+     * This method selects and formulates text to use as the assessment. Can be overridden by an extending class to provide special handling of the 
+     * assessment text. 
+     * 
+     * @return String - the assessment text
+     */
+    public String selectMsg()
+    {
+<span class="fc" id="L227">        StringBuffer oMessage = new StringBuffer( this.getAssessmentText() );</span>
+
+<span class="fc" id="L229">        String prefix = this.getPrefix();</span>
+<span class="pc bpc" id="L230" title="2 of 4 branches missed.">        if ( prefix != null &amp;&amp; prefix.length() &gt; 0 )</span>
+        {
+<span class="fc" id="L232">            oMessage.insert( 0, prefix );</span>
+        }
+
+<span class="fc" id="L235">        return ( oMessage.toString() );</span>
+    }
+
+
+
+    /**
+     * Returns the assessmentText
+     *
+     * @return StringBuffer - the assessmentText property.
+     */
+    protected StringBuffer getAssessmentText()
+    {
+<span class="fc" id="L247">        return assessmentText;</span>
+    }
+
+
+
+    /**
+     * convenience wrapper for setting the assessment text from a String object
+     */
+    protected void setAssessmentText( String msg )
+    {
+<span class="pc bpc" id="L257" title="1 of 4 branches missed.">        if ( msg == null || msg.length() == 0 )</span>
+        {
+<span class="fc" id="L259">            throw new InvalidParameterException( &quot;invalid assessment text[&quot; + msg + &quot;]&quot; );</span>
+        }
+
+<span class="fc" id="L262">        this.setAssessmentText( new StringBuffer( msg ) );</span>
+<span class="fc" id="L263">    }</span>
+
+
+
+    /**
+     * Sets the assessmentText. Must not be null or an empty String.
+     *
+     * @param assessmentText StringBuffer - new value for the assessmentText property.
+     * @throws InvalidParameterException
+     */
+    protected void setAssessmentText( StringBuffer assessmentText )
+    {
+<span class="fc" id="L275">        this.assessmentText = assessmentText;</span>
+<span class="fc" id="L276">    }</span>
+
+
+
+    /**
+     * Returns the now. 
+     * 
+     * &lt;br/&gt;&lt;br/&gt;&lt;b&gt;Note:&lt;/b&gt; Made protected for unit testing
+     *
+     * @return Date - the now property.
+     */
+    protected Date getNow()
+    {
+<span class="fc" id="L289">        return now;</span>
+    }
+
+
+
+    /**
+     * Sets the now Date object. If now is null, the current date is used.
+     *
+     * @param newNow Date - new value for the now property.
+     */
+    protected void setNow( Date newNow )
+    {
+<span class="fc" id="L301">        logger.entry( &quot;setNow&quot; );</span>
+<span class="pc bpc" id="L302" title="1 of 2 branches missed.">        if ( now == null )</span>
+        {
+<span class="fc" id="L304">            logger.debug( &quot;setNow&quot;, &quot;called with null date...using this moment&quot; );</span>
+<span class="fc" id="L305">            this.now = new Date();</span>
+<span class="fc" id="L306">        }</span>
+        else
+        {
+<span class="nc" id="L309">            logger.debug( &quot;setNow&quot;, &quot;called with date...using supplied date&quot; );</span>
+<span class="nc" id="L310">            this.now = newNow;</span>
+        }
+<span class="fc" id="L312">        logger.debug( &quot;setNow&quot;, &quot;now is[&quot; + this.now.toString() + &quot;]&quot; );</span>
+<span class="fc" id="L313">        logger.exit( &quot;setNow&quot; );</span>
+<span class="fc" id="L314">    }</span>
+
+
+
+    /**
+     * Returns the delegate
+     *
+     * @return AssessmentDeliverDelegate - the delegate property.
+     */
+    protected AssessmentDeliverDelegate getDelegate()
+    {
+<span class="fc" id="L325">        return delegate;</span>
+    }
+
+
+
+    /**
+     * public method for setting the delivery delegate
+     * 
+     * @param delegate AssessmentDeliverDelegate - new delivery delegate
+     */
+    public void setDeliverDelegate( AssessmentDeliverDelegate delegate )
+    {
+<span class="fc bfc" id="L337" title="All 2 branches covered.">        if ( delegate == null )</span>
+        {
+<span class="fc" id="L339">            throw new InvalidParameterException( &quot;attempted to use an invalid AssessmentDeliverDelegate&quot; );</span>
+        }
+
+<span class="fc" id="L342">        this.delegate = delegate;</span>
+<span class="fc" id="L343">    }</span>
+
+
+
+    /**
+     * Returns the useTimeStamp
+     *
+     * @return boolean - the useTimeStamp property.
+     */
+    protected boolean isTimeStampDesired()
+    {
+<span class="fc" id="L354">        return isTimeStampDesired;</span>
+    }
+
+
+
+    /**
+     * setter for the isTimeStampDesired property
+     * 
+     * 
+     * @param newState boolean - new value for isTimeStampDesired
+     */
+    protected void setIsTimeStampDesired( boolean newState )
+    {
+<span class="fc" id="L367">        this.isTimeStampDesired = newState;</span>
+<span class="fc" id="L368">    }</span>
+
+
+
+    /**
+     * convenience public setter for the use of a time stamp
+     */
+    public void useTimeStamp()
+    {
+<span class="fc" id="L377">        this.setIsTimeStampDesired( true );</span>
+<span class="fc" id="L378">    }</span>
+
+
+
+    /**
+     * convenience public setter for no use of a time stamp
+     */
+    public void noTimeStamp()
+    {
+<span class="fc" id="L387">        this.setIsTimeStampDesired( false );</span>
+<span class="fc" id="L388">    }</span>
+
+
+
+    /**
+     * Returns the prefix
+     *
+     * @return String - the prefix property.
+     */
+    public String getPrefix()
+    {
+<span class="fc" id="L399">        return this.prefix;</span>
+    }
+
+
+
+    /**
+     * Sets the prefix
+     *
+     * @param prefix String - new value for the prefix property.
+     */
+    public void setPrefix( String prefix )
+    {
+<span class="fc" id="L411">        this.prefix = prefix;</span>
+<span class="fc" id="L412">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>AllTests (5) (May 5, 2016 1:25:56 PM)</div></body></html>
