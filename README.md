@@ -6,7 +6,7 @@
 
 Included is a handy method of capturing an event (such as an exception) and having a configurable method of delivery (STDOUT & email are provided). A logging manager with some convenience methods. Some basic file/directory utility methods. 
 
-To get a better idea about what's inside you can purse the [JavaDoc](https://htmlpreview.github.io/?http://github.com/DTownSMR/framework/blob/master/doc/index.html?overview-summary.html)
+To get a better idea about what's inside you can purse the [JavaDoc](https://htmlpreview.github.io/?http://github.com/DTownSMR/framework/blob/master/doc/overview-summary.html)     ** to work around html preview bug, click on "frames".
 
 Latest test [coverage report from EclEmma](https://htmlpreview.github.io/?http://github.com/DTownSMR/framework/blob/master/coverage/index.html)
 
