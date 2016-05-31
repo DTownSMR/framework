@@ -1,13 +1,7 @@
-/****************************************************************************/
-/* Confidential															    */
-/*																			*/
-/* OCO Source Materials														*/
-/*																			*/
-/* (c) Copyright Scott M. Russell 2016                                      */
-/* The source code for this program is not published or otherwise divested	*/
-/* of its trade secrets, irrespective of what has been deposited with the	*/
-/* U.S. Copyright Office.													*/
-/****************************************************************************/
+/**
+ * (c) Copyright  Scott M. Russell.  2016
+ *     All rights reserved.
+ */
 package net.srussell.framework.logging;
 /*
  * Created by: Scott Russell on May 5, 2016 12:30:07 PM for framework-for-git::net.srussell.framework.logging
