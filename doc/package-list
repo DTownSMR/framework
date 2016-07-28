@@ -1,5 +1,6 @@
 net.srussell.framework.assessment
 net.srussell.framework.exception
+net.srussell.framework.exception.handler
 net.srussell.framework.logging
 net.srussell.framework.singleton
 net.srussell.framework.utility.collection

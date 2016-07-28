@@ -1,5 +1,5 @@
 /**
- * (c) Copyright  Scott M. Russell.  2010
+ * (c) Copyright  Scott M. Russell.  2010, 2016
  *     All rights reserved.
  */
 
@@ -31,7 +31,8 @@ public interface Singleton
 
 }
 
-/** this is the Eclipse Java Editor Template code for the singleton wrapper. 
+/** this is the Eclipse Java Editor Template code for the singleton wrapper. Simply copy this code into an element 
+ * in the Preferences… -> Java -> Editor -> Templates
 
 
 //

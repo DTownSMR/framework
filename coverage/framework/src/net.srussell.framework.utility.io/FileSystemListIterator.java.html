@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>FileSystemListIterator.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (Jul 28, 2016 7:00:23 PM)</a> &gt; <a href="../../index.html" class="el_group">GIT-dtownsmr-framework</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.srussell.framework.utility.io</a> &gt; <span class="el_source">FileSystemListIterator.java</span></div><h1>FileSystemListIterator.java</h1><pre class="source lang-java linenums">/**
+ * (c) Copyright  Scott M. Russell.  2010
+ *     All rights reserved.
+ */
+
+package net.srussell.framework.utility.io;
+
+import java.io.File;
+import java.util.Iterator;
+
+import net.srussell.framework.exception.ApplicationException;
+import net.srussell.framework.logging.LogMgr;
+
+/**
+ */
+public class FileSystemListIterator implements Iterator&lt;File&gt;
+{
+
+    // auto-generated logging object
+<span class="fc" id="L20">    private static LogMgr logger = new LogMgr( &quot;net.srussell.framework.utility.io.FileSystemListIterator&quot; );</span>
+
+    /**
+     * the list
+     */
+<span class="fc" id="L25">    private File[] fileList = null;</span>
+
+    /**
+     * the index into the list
+     */
+<span class="fc" id="L30">    private int index = -1;</span>
+
+
+
+    public FileSystemListIterator( FileSystemList iteratorTarget )
+    {
+<span class="fc" id="L36">        super();</span>
+
+<span class="fc" id="L38">        fileList = iteratorTarget.getList();</span>
+<span class="fc" id="L39">        logger.debug( &quot;FileSystemListIterator&quot;, &quot;iterator instantiated with [&quot; + fileList.length + &quot;] entries&quot; );</span>
+<span class="fc" id="L40">    }</span>
+
+
+
+    /* (non-Javadoc)
+     * @see java.util.Iterator#hasNext()
+     */
+    @Override
+    public boolean hasNext()
+    {
+<span class="fc" id="L50">        logger.debug( &quot;hasNext&quot;, &quot;fileList.length[&quot; + fileList.length + &quot;] index[&quot; + index + &quot;]&quot; );</span>
+<span class="pc bpc" id="L51" title="1 of 4 branches missed.">        return ( ( fileList.length &gt; 0 &amp;&amp; fileList.length &gt; ( index + 1 ) ) ? true : false );</span>
+    }
+
+
+
+    /* (non-Javadoc)
+     * @see java.util.Iterator#next()
+     */
+    @Override
+    public File next()
+    {
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">        if ( hasNext() )</span>
+        {
+<span class="fc" id="L64">            ++index;</span>
+<span class="fc" id="L65">            logger.debug( &quot;next&quot;, &quot;hasNext() was true, index now[&quot; + index + &quot;]&quot; );</span>
+<span class="fc" id="L66">        }</span>
+        else
+        {
+<span class="nc" id="L69">            throw new ApplicationException( &quot;no next available&quot; );</span>
+        }
+<span class="fc" id="L71">        return fileList[index];</span>
+
+    }
+
+
+
+    /* (non-Javadoc)
+     * @see java.util.Iterator#remove()
+     */
+    @Override
+    public void remove()
+    {
+<span class="fc" id="L83">        logger.entry( &quot;remove&quot; );</span>
+<span class="fc" id="L84">        logger.debug( &quot;remove&quot;, &quot;removing entry[&quot; + fileList[index].getName() + &quot;]&quot; );</span>
+<span class="fc" id="L85">        File[] newFileList = new File[fileList.length - 1];</span>
+<span class="fc" id="L86">        int i = 0;</span>
+<span class="pc bpc" id="L87" title="1 of 2 branches missed.">        for ( i = 0; i &lt; index; i++ )</span>
+        {
+<span class="nc" id="L89">            newFileList[i] = fileList[i];</span>
+        }
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">        for ( int x = i + 1; x &lt; fileList.length; x++ )</span>
+        {
+<span class="nc" id="L93">            ++i;</span>
+<span class="nc" id="L94">            newFileList[x] = fileList[i];</span>
+        }
+<span class="fc" id="L96">        fileList = newFileList;</span>
+<span class="fc" id="L97">        logger.exit( &quot;remove&quot; );</span>
+<span class="fc" id="L98">    }</span>
+
+
+
+    public int size()
+    {
+<span class="fc" id="L104">        return fileList.length;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>AllTests (1) (Jul 28, 2016 7:00:23 PM)</div></body></html>

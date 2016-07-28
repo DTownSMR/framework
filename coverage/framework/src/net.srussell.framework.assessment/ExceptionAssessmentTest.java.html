@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>ExceptionAssessmentTest.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (Jul 28, 2016 7:00:23 PM)</a> &gt; <a href="../../index.html" class="el_group">GIT-dtownsmr-framework</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.srussell.framework.assessment</a> &gt; <span class="el_source">ExceptionAssessmentTest.java</span></div><h1>ExceptionAssessmentTest.java</h1><pre class="source lang-java linenums">/**
+ * (c) Copyright  Scott M. Russell.  2010
+ *     All rights reserved.
+ */
+
+package net.srussell.framework.assessment;
+
+import junit.framework.TestCase;
+import net.srussell.framework.logging.LogMgr;
+
+/**
+ */
+<span class="fc" id="L13">public class ExceptionAssessmentTest extends TestCase</span>
+{
+    // standard logging 
+<span class="fc" id="L16">    private static LogMgr logger = new LogMgr( &quot;net.srussell.framework.assessment.ExceptionAssessmentTest&quot; );</span>
+
+<span class="fc" id="L18">    private Throwable testException = null;</span>
+
+<span class="fc" id="L20">    private ExceptionAssessment testAssessment = null;</span>
+
+
+
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#setUp()
+     */
+    @Override
+    protected void setUp() throws Exception
+    {
+<span class="fc" id="L30">        super.setUp();</span>
+
+        try
+        {
+            try
+            {
+                try
+                {
+                    try
+                    {
+<span class="nc" id="L40">                        testAssessment.getAssessmentText(); // not assigned yet, will cause null pointer exception</span>
+<span class="nc" id="L41">                    }</span>
+<span class="fc" id="L42">                    catch( Throwable t )</span>
+                    {
+<span class="fc" id="L44">                        throw new RuntimeException( &quot;outer layer1&quot;, t );</span>
+                    }
+                }
+<span class="fc" id="L47">                catch( Throwable t )</span>
+                {
+<span class="fc" id="L49">                    throw new RuntimeException( &quot;outer layer2&quot;, t );</span>
+                }
+            }
+<span class="fc" id="L52">            catch( Throwable t )</span>
+            {
+<span class="fc" id="L54">                throw new RuntimeException( &quot;outer layer3&quot;, t );</span>
+            }
+        }
+<span class="fc" id="L57">        catch( Throwable t )</span>
+        {
+<span class="fc" id="L59">            testException = t;</span>
+        }
+
+<span class="fc" id="L62">        testAssessment = new ExceptionAssessment( &quot;JUnit test&quot;, testException );</span>
+<span class="fc" id="L63">    }</span>
+
+
+
+    /**
+     * Test method for {@link net.srussell.framework.assessment.ExceptionAssessment#buildAsseessment()}.
+     */
+    public void testBuildAsseessment()
+    {
+        // assessment starts @ 28 to bypass date/time stamp prefix
+<span class="fc" id="L73">        assertTrue( &quot;unexpected assessment&quot;, testAssessment.buildAsseessment().substring( 28 ).startsWith( &quot;: [assessment] JUnit test\n\nexception chain:\nouter layer3\nouter layer2\nouter layer1\n...ROOT CAUSE...\njava.lang.NullPointerException&quot; ) );</span>
+<span class="fc" id="L74">    }</span>
+
+
+
+    /**
+     * Test method for {@link net.srussell.framework.assessment.ExceptionAssessment#getCause(java.lang.Throwable)}.
+     */
+    public void testGetCause()
+    {
+<span class="fc" id="L83">        assertTrue( &quot;unexpected cause&quot;, testAssessment.getCause( testException ).startsWith( &quot;outer layer3\nouter layer2\nouter layer1\n...ROOT CAUSE...\njava.lang.NullPointerException&quot; ) );</span>
+<span class="fc" id="L84">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>AllTests (1) (Jul 28, 2016 7:00:23 PM)</div></body></html>

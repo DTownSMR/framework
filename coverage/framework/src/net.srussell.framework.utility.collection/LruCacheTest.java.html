@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>LruCacheTest.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (Jul 28, 2016 7:00:23 PM)</a> &gt; <a href="../../index.html" class="el_group">GIT-dtownsmr-framework</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.srussell.framework.utility.collection</a> &gt; <span class="el_source">LruCacheTest.java</span></div><h1>LruCacheTest.java</h1><pre class="source lang-java linenums">/**
+ * (c) Copyright  Scott M. Russell.  2010
+ *     All rights reserved.
+ */
+
+package net.srussell.framework.utility.collection;
+/*
+ * Created by: scottrussell on Apr 29, 2016 3:37:09 AM for framework::net.srussell.framework.utility.collection
+ */
+
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
+
+import junit.framework.TestCase;
+import net.srussell.framework.singleton.Singleton;
+import net.srussell.framework.singleton.SingletonFactoryFunctor;
+import net.srussell.framework.utility.collection.LruCacheTest.CacheTestObject;
+import net.srussell.framework.utility.collection.LruCacheTest.TestObjectLruCache;
+
+<span class="fc" id="L22">public class LruCacheTest extends TestCase</span>
+{
+    
+    TestObjectLruCache cache;
+
+
+
+    public void setUp() throws Exception
+    {
+<span class="fc" id="L31">        cache = new TestObjectLruCache();</span>
+<span class="fc" id="L32">    }</span>
+
+
+
+    public void test()
+    {
+<span class="fc" id="L38">        addCacheEntry( &quot;blue&quot; );</span>
+<span class="fc" id="L39">        addCacheEntry( &quot;Jupiter&quot; );</span>
+<span class="fc" id="L40">        addCacheEntry( &quot;Bob the hobo&quot; );</span>
+<span class="fc" id="L41">        printCache();</span>
+
+<span class="fc" id="L43">        addCacheEntry( &quot;yellow&quot; );</span>
+<span class="fc" id="L44">        LruCacheWrapper.instance().get( &quot;blue&quot; );</span>
+<span class="fc" id="L45">        LruCacheWrapper.instance().get( &quot;Bob the hobo&quot; );</span>
+<span class="fc" id="L46">        addCacheEntry( &quot;green&quot; );</span>
+<span class="fc" id="L47">        LruCacheWrapper.instance().get( &quot;blue&quot; );</span>
+<span class="fc" id="L48">        LruCacheWrapper.instance().get( &quot;Bob the hobo&quot; );</span>
+<span class="fc" id="L49">        addCacheEntry( &quot;black&quot; );</span>
+<span class="fc" id="L50">        printCache();</span>
+
+<span class="fc" id="L52">        LruCacheWrapper.instance().get( &quot;blue&quot; );</span>
+<span class="fc" id="L53">        LruCacheWrapper.instance().get( &quot;yellow&quot; );</span>
+<span class="fc" id="L54">        LruCacheWrapper.instance().get( &quot;green&quot; );</span>
+<span class="fc" id="L55">        LruCacheWrapper.instance().get( &quot;Bob the hobo&quot; );</span>
+<span class="fc" id="L56">        addCacheEntry( &quot;grey&quot; );</span>
+<span class="fc" id="L57">        printCache();</span>
+
+<span class="fc" id="L59">        LruCacheWrapper.instance().get( &quot;Bob the hobo&quot; );</span>
+<span class="fc" id="L60">        printCache();</span>
+
+<span class="fc" id="L62">        LruCacheWrapper.instance().get( &quot;yellow&quot; );</span>
+<span class="fc" id="L63">        printCache();</span>
+
+<span class="fc" id="L65">        addCacheEntry( &quot;purple&quot; );</span>
+<span class="fc" id="L66">        printCache();</span>
+<span class="fc" id="L67">    }</span>
+
+
+
+    private void printCache()
+    {
+<span class="fc" id="L73">        System.out.println( &quot;cache...&quot; );</span>
+<span class="fc" id="L74">        Set&lt;String&gt; keySet = cache.keySet();</span>
+<span class="fc" id="L75">        Object[] keys = keySet.toArray();</span>
+        CacheTestObject thisObject;
+<span class="fc bfc" id="L77" title="All 2 branches covered.">        for ( int i = 0; i &lt; keys.length; i++ )</span>
+        {
+<span class="fc" id="L79">            thisObject = (CacheTestObject)LruCacheWrapper.instance().get( keys[i] );</span>
+<span class="fc" id="L80">            System.out.println( thisObject.display() );</span>
+        }
+<span class="fc" id="L82">        System.out.println( &quot;...end of cache\n\n&quot; );</span>
+<span class="fc" id="L83">    }</span>
+
+
+
+    private CacheTestObject addCacheEntry( String cacheValue )
+    {
+<span class="fc" id="L89">        CacheTestObject newEntry = new CacheTestObject( cacheValue );</span>
+<span class="fc" id="L90">        cache.put( cacheValue, newEntry );</span>
+
+<span class="fc" id="L92">        return newEntry;</span>
+    }
+
+    public class CacheTestObject
+    {
+        private String value;
+
+
+
+        public CacheTestObject( String value )
+<span class="fc" id="L102">        {</span>
+<span class="fc" id="L103">            super();</span>
+<span class="fc" id="L104">            this.value = value;</span>
+<span class="fc" id="L105">        }</span>
+
+
+
+        @Override
+        public String toString()
+        {
+<span class="nc" id="L112">            return value;</span>
+        }
+
+
+
+        public String display()
+        {
+<span class="fc" id="L119">            return &quot;String value is[&quot; + value + &quot;]&quot;;</span>
+        }
+    }
+
+    /**
+     * convenience wrapper access to the singleton cache and provide factory method for instantiating the LruCacheWrapper with the correct type
+     */
+<span class="fc" id="L126">    final public class TestObjectLruCache implements SingletonFactoryFunctor</span>
+    {
+        {
+<span class="fc" id="L129">            LruCacheWrapper.setFactory( this ); // we'll make the singleton instance</span>
+        }
+
+
+
+        /**
+         * instantiate the correct LRU cache object
+         * @see net.srussell.framework.singleton.SingletonFactoryFunctor#makeInstance()
+         */
+        @Override
+        public Singleton makeInstance()
+        {
+<span class="fc" id="L141">            return new LruCache&lt;String, CacheTestObject&gt;( 5 );</span>
+        }
+
+
+
+        public boolean containsValue( Object value )
+        {
+<span class="nc" id="L148">            return LruCacheWrapper.instance().containsValue( value );</span>
+        }
+
+
+
+        public boolean isEmpty()
+        {
+<span class="nc" id="L155">            return LruCacheWrapper.instance().isEmpty();</span>
+        }
+
+
+
+        public CacheTestObject get( Object key )
+        {
+<span class="nc" id="L162">            return (CacheTestObject)LruCacheWrapper.instance().get( key );</span>
+        }
+
+
+
+        public boolean containsKey( Object key )
+        {
+<span class="nc" id="L169">            return LruCacheWrapper.instance().containsKey( key );</span>
+        }
+
+
+
+        public CacheTestObject put( String key, CacheTestObject value )
+        {
+<span class="fc" id="L176">            return (CacheTestObject)LruCacheWrapper.instance().put( key, value );</span>
+        }
+
+
+
+        public void putAll( Map&lt;? extends String, ? extends CacheTestObject&gt; m )
+        {
+<span class="nc" id="L183">            LruCacheWrapper.instance().putAll( m );</span>
+<span class="nc" id="L184">        }</span>
+
+
+
+        public CacheTestObject remove( Object key )
+        {
+<span class="nc" id="L190">            return (CacheTestObject)LruCacheWrapper.instance().remove( key );</span>
+        }
+
+
+
+        public Set&lt;String&gt; keySet()
+        {
+<span class="fc" id="L197">            return LruCacheWrapper.instance().keySet();</span>
+        }
+
+
+
+        public Collection&lt;CacheTestObject&gt; values()
+        {
+<span class="nc" id="L204">            return LruCacheWrapper.instance().values();</span>
+        }
+
+
+
+        public Set&lt;Entry&lt;String, CacheTestObject&gt;&gt; entrySet()
+        {
+<span class="nc" id="L211">            return LruCacheWrapper.instance().entrySet();</span>
+        }
+
+    }
+    
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>AllTests (1) (Jul 28, 2016 7:00:23 PM)</div></body></html>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>ApplicationException.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (Jul 28, 2016 7:00:23 PM)</a> &gt; <a href="../../index.html" class="el_group">GIT-dtownsmr-framework</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.srussell.framework.exception</a> &gt; <span class="el_source">ApplicationException.java</span></div><h1>ApplicationException.java</h1><pre class="source lang-java linenums">/**
+ * (c) Copyright  Scott M. Russell.  2010
+ *     All rights reserved.
+ */
+
+
+package net.srussell.framework.exception;
+
+import net.srussell.framework.assessment.Assessment;
+
+/**
+ * Basic application exception. Application exceptions are based on RuntimeException to eliminate the need to clutter method signatures
+ * with complex throws clauses. 
+ * &lt;br&gt;&lt;br&gt;
+ * Localized non-runtime exceptions should only be used when it's expected that the call &lt;b&gt;&lt;i&gt;can AND SHOULD&lt;/i&gt;&lt;/b&gt;  handle the exception immediately.
+ * If there's a possibility that the caller won't/can't handle an exception, then an exception based off of this base class should be
+ * used to allow application exceptions to percolate to the highest application level.
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * &lt;center&gt;
+ * &lt;a href=&quot;http://www.srussell.net&quot;&gt; Copyright &amp;copy; Scott M. Russell, 2010&lt;/a&gt;
+ * &lt;/center&gt;
+ */
+public class ApplicationException extends RuntimeException
+{
+    private static final long serialVersionUID = -8812631247709787069L;
+
+<span class="pc" id="L28">    private Assessment exceptionAssessment = null;</span>
+
+
+
+    /**
+     * base constructor, just a message
+     * 
+     * @param msg String - the message relating to the exception
+     */
+    public ApplicationException( String msg )
+    {
+<span class="fc" id="L39">        super( msg );</span>
+<span class="fc" id="L40">    }</span>
+
+
+
+    /**
+     * constructor for an exception with a message and an associated assessment
+     * 
+     * @param msg String - the message associated with the exception
+     * @param assessment Assessment - an Assessment object detailing the situation surrounding this exception
+     */
+    public ApplicationException( String msg, Assessment assessment )
+    {
+<span class="nc" id="L52">        super( msg );</span>
+<span class="nc" id="L53">        this.setAssessment( assessment );</span>
+<span class="nc" id="L54">    }</span>
+
+
+
+    /**
+     * constructor for an exception with a message and an exception which caused this exception
+     * 
+     * @param message String - the message associated with the exception
+     * @param cause Throwable - an exception that caused this exception
+     */
+    public ApplicationException( String message, Throwable cause )
+    {
+<span class="fc" id="L66">        super( message, cause );</span>
+<span class="fc" id="L67">    }</span>
+
+
+
+    /**
+     * constructor for an exception with a message and an exception which caused this exception
+     * 
+     * @param message String - the message associated with the exception
+     * @param cause Throwable - an exception that caused this exception
+     * @param assessment Assessment - an Assessment object detailing the situation surrounding this exception
+     */
+    public ApplicationException( String message, Throwable cause, Assessment assessment )
+    {
+<span class="nc" id="L80">        super( message, cause );</span>
+<span class="nc" id="L81">        this.setAssessment( assessment );</span>
+<span class="nc" id="L82">    }</span>
+
+
+
+    private void setAssessment( Assessment assessment )
+    {
+<span class="nc" id="L88">        exceptionAssessment = assessment;</span>
+<span class="nc" id="L89">    }</span>
+
+
+
+    public Assessment getMyAssessment()
+    {
+<span class="nc" id="L95">        return exceptionAssessment;</span>
+    }
+
+
+
+    /**
+     * delivers an Assessment associated with this exception if it exists
+     */
+    public void deliverAssessment()
+    {
+<span class="nc" id="L105">        Assessment exceptionAssessment = this.getMyAssessment();</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">        if ( exceptionAssessment != null )</span>
+        {
+<span class="nc" id="L108">            exceptionAssessment.deliver();</span>
+        }
+<span class="nc" id="L110">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>AllTests (1) (Jul 28, 2016 7:00:23 PM)</div></body></html>

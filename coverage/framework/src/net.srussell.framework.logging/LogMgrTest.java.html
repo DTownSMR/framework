@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>LogMgrTest.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (Jul 28, 2016 7:00:23 PM)</a> &gt; <a href="../../index.html" class="el_group">GIT-dtownsmr-framework</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.srussell.framework.logging</a> &gt; <span class="el_source">LogMgrTest.java</span></div><h1>LogMgrTest.java</h1><pre class="source lang-java linenums">/**
+ * (c) Copyright  Scott M. Russell.  2016
+ *     All rights reserved.
+ */
+package net.srussell.framework.logging;
+/*
+ * Created by: Scott Russell on May 5, 2016 12:30:07 PM for framework-for-git::net.srussell.framework.logging
+ */
+
+import junit.framework.TestCase;
+import java.util.logging.Filter;
+import java.util.logging.LogRecord;
+import java.util.logging.Level;
+
+<span class="fc" id="L15">public class LogMgrTest extends TestCase implements Filter</span>
+{
+    private static final String LOG_MESSAGE = &quot;a log message&quot;;
+    // auto-generated logging object
+<span class="fc" id="L19">    private static LogMgr logger = new LogMgr( &quot;net.srussell.framework.logging.LogMgrTest&quot; );</span>
+
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#setUp()
+     */
+    @Override
+    protected void setUp() throws Exception
+    {
+<span class="fc" id="L27">        super.setUp();</span>
+
+<span class="fc" id="L29">        Filter newFilter = this;</span>
+<span class="fc" id="L30">        logger.getWrappedLogger().setFilter( newFilter );</span>
+<span class="fc" id="L31">    }</span>
+
+    @Override
+    public boolean isLoggable( LogRecord record )
+    {
+<span class="fc" id="L36">        return false; // make sure we don't actually log anything.</span>
+    }
+
+    public void testWarnStringStringThrowable()
+    {
+<span class="fc" id="L41">        logger.warn( &quot;StringStringThrowable&quot;, LOG_MESSAGE, null );</span>
+<span class="fc" id="L42">    }</span>
+
+
+
+    public void testWarnStringString()
+    {
+<span class="fc" id="L48">        logger.warn( &quot;StringString&quot;, LOG_MESSAGE );</span>
+<span class="fc" id="L49">    }</span>
+
+
+
+    public void testErrorStringString()
+    {
+<span class="fc" id="L55">        logger.error( &quot;StringString&quot;, LOG_MESSAGE );</span>
+<span class="fc" id="L56">    }</span>
+
+
+
+    public void testErrorStringStringThrowable()
+    {
+<span class="fc" id="L62">        logger.error( &quot;StringStringThrowable&quot;, LOG_MESSAGE, null );</span>
+<span class="fc" id="L63">    }</span>
+
+
+
+    public void testInfoStringString()
+    {
+<span class="fc" id="L69">        logger.info( &quot;StringString&quot;, LOG_MESSAGE );</span>
+<span class="fc" id="L70">    }</span>
+
+
+
+    public void testInfoStringStringThrowable()
+    {
+<span class="fc" id="L76">        logger.info( &quot;StringStringThrowable&quot;, LOG_MESSAGE, null );</span>
+<span class="fc" id="L77">    }</span>
+
+
+
+    public void testDebugStringString()
+    {
+<span class="fc" id="L83">        logger.debug( &quot;StringString&quot;, LOG_MESSAGE );</span>
+<span class="fc" id="L84">    }</span>
+
+
+
+    public void testDebugStringStringArray()
+    {
+<span class="fc" id="L90">        logger.debug( &quot;StringStringArray&quot;, LOG_MESSAGE, null );</span>
+<span class="fc" id="L91">    }</span>
+
+
+
+    public void testDebugStringStringThrowable()
+    {
+<span class="fc" id="L97">        logger.getWrappedLogger().setLevel( Level.FINEST );</span>
+<span class="fc" id="L98">        logger.debug( &quot;StringStringThrowable&quot;, LOG_MESSAGE, new RuntimeException(&quot;testing 1-2-3&quot;) );</span>
+<span class="fc" id="L99">    }</span>
+
+
+
+    public void testEntry()
+    {
+<span class="fc" id="L105">        logger.entry( &quot;log entry&quot; );</span>
+<span class="fc" id="L106">    }</span>
+
+
+
+    public void testExit()
+    {
+<span class="fc" id="L112">        logger.exit( &quot;log exit&quot; );</span>
+<span class="fc" id="L113">    }</span>
+
+
+
+    public void testIsWarnEnabled()
+    {
+<span class="fc" id="L119">        logger.getWrappedLogger().setLevel( Level.WARNING );</span>
+<span class="fc" id="L120">        assertTrue(&quot;warn is NOT enabled&quot;, logger.isWarnEnabled());</span>
+<span class="fc" id="L121">        logger.getWrappedLogger().setLevel( Level.OFF );</span>
+<span class="fc" id="L122">        assertFalse(&quot;warn is enabled&quot;, logger.isWarnEnabled());</span>
+<span class="fc" id="L123">    }</span>
+
+
+
+    public void testIsErrorEnabled()
+    {
+<span class="fc" id="L129">        logger.getWrappedLogger().setLevel( Level.SEVERE );</span>
+<span class="fc" id="L130">        assertTrue(&quot;error is NOT enabled&quot;, logger.isErrorEnabled());</span>
+<span class="fc" id="L131">        logger.getWrappedLogger().setLevel( Level.OFF );</span>
+<span class="fc" id="L132">        assertFalse(&quot;error is enabled&quot;, logger.isErrorEnabled());</span>
+<span class="fc" id="L133">    }</span>
+
+
+
+    public void testIsInfoEnabled()
+    {
+<span class="fc" id="L139">        logger.getWrappedLogger().setLevel( Level.FINE ); // info level works with ALL, FINE* </span>
+<span class="fc" id="L140">        assertTrue(&quot;info is NOT enabled&quot;, logger.isInfoEnabled());</span>
+<span class="fc" id="L141">        logger.getWrappedLogger().setLevel( Level.OFF );</span>
+<span class="fc" id="L142">        assertFalse(&quot;info is enabled&quot;, logger.isInfoEnabled());</span>
+<span class="fc" id="L143">    }</span>
+
+
+
+    public void testIsDebugEnabled()
+    {
+<span class="fc" id="L149">        logger.getWrappedLogger().setLevel( Level.FINEST );</span>
+<span class="fc" id="L150">        assertTrue(&quot;debug is NOT enabled&quot;, logger.isDebugEnabled());</span>
+<span class="fc" id="L151">        logger.getWrappedLogger().setLevel( Level.OFF );</span>
+<span class="fc" id="L152">        assertFalse(&quot;debug is enabled&quot;, logger.isDebugEnabled());</span>
+<span class="fc" id="L153">    }</span>
+
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>AllTests (1) (Jul 28, 2016 7:00:23 PM)</div></body></html>

@@ -22,7 +22,7 @@ public class FileAndDirectoryListingTest extends TestCase
     /**
      * path to directory to use for JUnit testing
      */
-    private static final String JUNIT_TEST_PATH = "./src/net/srussell/framework/utility/io/junit/subdirectory";
+    private static final String JUNIT_TEST_PATH = "src/net/srussell/framework/utility/io/junit/subdirectory";
 
     // auto-generated logging object
     private static LogMgr logger = new LogMgr( "net.srussell.framework.utility.io.FileAndDirectoryListingTest" );

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>DefaultAssessmentDelivery.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (Jul 28, 2016 7:00:23 PM)</a> &gt; <a href="../../index.html" class="el_group">GIT-dtownsmr-framework</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.srussell.framework.assessment</a> &gt; <span class="el_source">DefaultAssessmentDelivery.java</span></div><h1>DefaultAssessmentDelivery.java</h1><pre class="source lang-java linenums">/**
+ * (c) Copyright  Scott M. Russell.  2010
+ *     All rights reserved.
+ */
+
+package net.srussell.framework.assessment;
+
+/**
+ * provides the default delivery for an assessment to stdout
+ * 
+ * @version 1.0
+ * @author Scott Russell
+ * @since 1.0
+ * 
+ * &lt;br&gt;&lt;br&gt;
+ * &lt;center&gt;
+ * &lt;a href=&quot;http://www.srussell.net&quot;&gt; Copyright &amp;copy; Scott M. Russell, 2010&lt;/a&gt;
+ * &lt;/center&gt;
+ */
+<span class="fc" id="L20">public class DefaultAssessmentDelivery implements AssessmentDeliverDelegate</span>
+{
+
+    /* (non-Javadoc)
+     * @see net.srussell.framework.assessment.AssessmentDeliverDelegate#delegatedDeliver(net.srussell.framework.assessment.Assessment)
+     */
+    @Override
+    public void delegatedDeliver( Assessment assessment )
+    {
+<span class="fc" id="L29">        System.out.println( assessment.buildAsseessment() );</span>
+<span class="fc" id="L30">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>AllTests (1) (Jul 28, 2016 7:00:23 PM)</div></body></html>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>SvnRevisionNumber.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (Jul 28, 2016 7:00:23 PM)</a> &gt; <a href="../../index.html" class="el_group">GIT-dtownsmr-framework</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.srussell.framework.utility.string.vcs.subversion</a> &gt; <span class="el_source">SvnRevisionNumber.java</span></div><h1>SvnRevisionNumber.java</h1><pre class="source lang-java linenums">/**
+ * (c) Copyright  Scott M. Russell.  2010,2016
+ *     All rights reserved.
+ */
+
+package net.srussell.framework.utility.string.vcs.subversion;
+
+import net.srussell.framework.logging.LogMgr;
+import net.srussell.framework.utility.string.vcs.RevisionNumberI;
+import net.srussell.framework.utility.string.vcs.VcsRevisionNumber;
+
+/**
+ */
+public class SvnRevisionNumber extends VcsRevisionNumber implements RevisionNumberI
+{
+
+    // auto-generated logging object
+<span class="fc" id="L18">    private static LogMgr logger = new LogMgr( &quot;net.srussell.framework.utility.string.subversion.SvnRevisionNumber&quot; );</span>
+
+    /** 
+     * hide the empty constructor since it doesn't make sense to have a non-initialized SVN revision number
+     */
+    protected SvnRevisionNumber()
+    {
+<span class="nc" id="L25">        super();</span>
+<span class="nc" id="L26">    }</span>
+
+
+
+    /**
+     * base constructor
+     *
+     * @param svnRevisionString - the subversion revision string
+     */
+    public SvnRevisionNumber( String svnRevisionString )
+    {
+<span class="fc" id="L37">        super();</span>
+
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        if ( svnRevisionString == null )</span>
+        {
+<span class="fc" id="L41">            throw new IllegalArgumentException( &quot;null SVN revision string not allowed&quot; );</span>
+        }
+
+<span class="fc" id="L44">        this.setRevisionNumber( parseSvnRevisionProperty( svnRevisionString ) );</span>
+<span class="fc" id="L45">    }</span>
+
+
+
+    /**
+     * pull the actual SVN revision number from the $Rev$ formatted field.
+     *
+     * @param svnRevisionString String  - a SVN revision String
+     * @return String - the parsed out revision number
+     */
+    protected String parseSvnRevisionProperty( String svnRevisionString )
+    {
+<span class="fc" id="L57">        logger.entry( &quot;parseSvnRevisionProperty&quot; );</span>
+
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        if ( doesNotAppearValid( svnRevisionString ) )</span>
+        {
+<span class="fc" id="L61">            throw new IllegalArgumentException( &quot;SVN revision string[&quot; + svnRevisionString + &quot;] does not appear to be valid&quot; );</span>
+        }
+
+<span class="fc" id="L64">        String[] bits = svnRevisionString.split( &quot; &quot; );</span>
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        if ( logger.isDebugEnabled() )</span>
+        {
+<span class="nc bnc" id="L67" title="All 2 branches missed.">            for ( int i = 0; i &lt; bits.length; i++ )</span>
+            {
+<span class="nc" id="L69">                System.out.println( &quot;bit [&quot; + i + &quot;] = [&quot; + bits[i] + &quot;]&quot; );</span>
+            }
+        }
+
+<span class="fc" id="L73">        String oRevision = null;</span>
+        try
+        {
+<span class="fc" id="L76">            oRevision = bits[1];</span>
+<span class="fc" id="L77">        }</span>
+<span class="nc" id="L78">        catch( ArrayIndexOutOfBoundsException e )</span>
+        {
+<span class="nc" id="L80">            throw new IllegalArgumentException( &quot;non-parseable[&quot; + svnRevisionString + &quot;] SVN revision string&quot; );</span>
+        }
+
+        // the SVN revision number must be...ummm...A NUMBER!
+        try
+        {
+<span class="fc" id="L86">            Integer.parseInt( oRevision );</span>
+<span class="fc" id="L87">        }</span>
+<span class="fc" id="L88">        catch( NumberFormatException e )</span>
+        {
+<span class="fc" id="L90">            throw new IllegalArgumentException( &quot;revision number part of [&quot; + svnRevisionString + &quot;] is non-numeric&quot; );</span>
+        }
+
+<span class="fc" id="L93">        logger.debug( &quot;parseSvnRevisionProperty&quot;, &quot;using [&quot;, oRevision, &quot;] from[&quot;, svnRevisionString, &quot;]&quot; );</span>
+
+<span class="fc" id="L95">        logger.exit( &quot;getRevision&quot; );</span>
+<span class="fc" id="L96">        return oRevision;</span>
+    }
+
+
+
+    /**
+     * try and do some basic validity testing that a string appears to be a valid SVN revision String conforming to the format: &quot;$Rev: nn $&quot;
+     *
+     * @param svnRevisionString String - an alleged SVN revision string
+     * @return boolean - true/false indicator
+     */
+    protected boolean doesNotAppearValid( String svnRevisionString )
+    {
+<span class="fc" id="L109">        logger.entry( &quot;doesNotAppearValid&quot; );</span>
+<span class="fc" id="L110">        boolean oFlag = false;</span>
+
+<span class="fc" id="L112">        logger.debug( &quot;doesNotAppearValid&quot;, &quot;validating[&quot;, svnRevisionString, &quot;]...&quot; );</span>
+
+        // must start and end with a dollar sign
+<span class="fc bfc" id="L115" title="All 4 branches covered.">        if ( !svnRevisionString.startsWith( &quot;$&quot; ) || !svnRevisionString.endsWith( &quot;$&quot; ) )</span>
+        {
+<span class="fc" id="L117">            logger.debug( &quot;doesNotAppearValid&quot;, &quot;does not start or end with dollar sign&quot; );</span>
+<span class="fc" id="L118">            oFlag = true;</span>
+        }
+
+        // must have a colon
+<span class="fc bfc" id="L122" title="All 2 branches covered.">        if ( svnRevisionString.indexOf( &quot;:&quot; ) == -1 )</span>
+        {
+<span class="fc" id="L124">            logger.debug( &quot;doesNotAppearValid&quot;, &quot;does not contain a colon&quot; );</span>
+<span class="fc" id="L125">            oFlag = true;</span>
+        }
+
+        // must have two spaces 
+<span class="fc" id="L129">        int idx = svnRevisionString.indexOf( &quot; &quot; );</span>
+<span class="fc bfc" id="L130" title="All 4 branches covered.">        if ( idx == -1 || ( svnRevisionString.indexOf( &quot; &quot;, idx + 1 ) == -1 ) )</span>
+        {
+<span class="fc" id="L132">            logger.debug( &quot;doesNotAppearValid&quot;, &quot;does not have two spaces&quot; );</span>
+<span class="fc" id="L133">            oFlag = true;</span>
+        }
+
+<span class="fc" id="L136">        logger.exit( &quot;doesNotAppearValid&quot; );</span>
+<span class="fc" id="L137">        return oFlag;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>AllTests (1) (Jul 28, 2016 7:00:23 PM)</div></body></html>

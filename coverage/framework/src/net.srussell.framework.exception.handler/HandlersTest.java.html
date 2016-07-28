@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>HandlersTest.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (Jul 28, 2016 7:00:23 PM)</a> &gt; <a href="../../index.html" class="el_group">GIT-dtownsmr-framework</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.srussell.framework.exception.handler</a> &gt; <span class="el_source">HandlersTest.java</span></div><h1>HandlersTest.java</h1><pre class="source lang-java linenums">/**
+ * (c) Copyright Scott M. Russell 2016
+ */
+package net.srussell.framework.exception.handler;
+/*
+ * Created by: Scott Russell on Jul 28, 2016 3:58:39 PM for GIT-dtownsmr-framework::net.srussell.framework.exception.handler
+ */
+
+import junit.framework.TestCase;
+import net.srussell.framework.exception.ApplicationException;
+
+<span class="fc" id="L12">public class HandlersTest extends TestCase implements ExceptionHandler</span>
+{
+<span class="fc" id="L14">    Handlers handlers = null;</span>
+    
+    Boolean isHandled;
+
+    protected void setUp() throws Exception
+    {
+<span class="fc" id="L20">        super.setUp();</span>
+        
+<span class="fc" id="L22">        handlers = new Handlers();</span>
+<span class="fc" id="L23">        isHandled = false;</span>
+<span class="fc" id="L24">    }</span>
+
+
+
+    public void testHandle()
+    {
+<span class="fc" id="L30">        handlers.setHandler( ApplicationException.class, this );</span>
+<span class="fc" id="L31">        handlers.handle( new ApplicationException(&quot;YIKES!&quot;) );</span>
+<span class="fc" id="L32">        assertTrue(&quot;wasn't handled&quot;,isHandled);</span>
+<span class="fc" id="L33">    }</span>
+
+
+    /* 
+     * the default handler should kick in and turn it into a ApplicationException
+     */
+    public void testBadHandle()
+    {
+<span class="fc" id="L41">        handlers.setHandler( ApplicationException.class, this );</span>
+        try
+        {
+<span class="nc" id="L44">            handlers.handle( new Exception(&quot;YIKES!&quot;) );</span>
+<span class="nc" id="L45">            fail(&quot;bad handling&quot;);</span>
+<span class="nc" id="L46">        }</span>
+<span class="fc" id="L47">        catch(ApplicationException ae)</span>
+        {
+<span class="fc" id="L49">            assertEquals(&quot;wrong exception&quot;, &quot;YIKES!&quot;, ae.getMessage());   // expected this</span>
+<span class="fc" id="L50">            return;</span>
+        }
+<span class="nc" id="L52">        fail(&quot;bad handle&quot;);</span>
+<span class="nc" id="L53">    }</span>
+
+
+
+    @Override
+    public void handle( Throwable t )
+    {
+<span class="fc" id="L60">        isHandled = true;        </span>
+<span class="fc" id="L61">    }</span>
+
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>AllTests (1) (Jul 28, 2016 7:00:23 PM)</div></body></html>

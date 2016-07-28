@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>Handlers.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (Jul 28, 2016 7:00:23 PM)</a> &gt; <a href="../../index.html" class="el_group">GIT-dtownsmr-framework</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.srussell.framework.exception.handler</a> &gt; <span class="el_source">Handlers.java</span></div><h1>Handlers.java</h1><pre class="source lang-java linenums">/**
+ * (c) Copyright Scott M. Russell 2016
+ */
+package net.srussell.framework.exception.handler;
+/*
+ * Created by: Scott Russell on Jul 28, 2016 3:01:32 PM for GIT-dtownsmr-framework::net.srussell.framework.exception.handler
+ */
+
+import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
+
+import net.srussell.framework.singleton.Singleton;
+
+/**
+ *  Handles is the business logic of handling exceptions. It provides a means to manage a collection of exception handlers via
+ *  {@link #setHandler(Class, ExceptionHandler)}. That collection is then used by the {@link #handle(Throwable)} method to determine
+ *  which handler to call based on the exception class. A default handler is provided and can be overridden by the {@link #setDefaultHandler(ExceptionHandler)}
+ *  method.
+ *
+ *  @see {@link net.srussell.framework.exception.handler.DefaultHandler}
+ *
+ *    @author Scott Russell
+ * &lt;br&gt;&lt;br&gt;
+ * &lt;center&gt;
+ * &lt;a href=&quot;http://www.srussell.net&quot;&gt; Copyright &amp;copy; Scott M. Russell, 2016&lt;/a&gt;
+ * &lt;/center&gt;
+ */
+<span class="fc" id="L29">public class Handlers implements Singleton, ExceptionHandler</span>
+{
+<span class="fc" id="L31">    private ConcurrentHashMap&lt;Class&lt;?&gt;, ExceptionHandler&gt; handlers = new ConcurrentHashMap&lt;Class&lt;?&gt;, ExceptionHandler&gt;();</span>
+
+<span class="fc" id="L33">    private ExceptionHandler dh = new DefaultHandler();</span>
+    
+    /**
+     * 
+     * Adds the passed in exception handler to the collection of handlers. It will replace an existing entry if one exists.
+     * 
+     * @param exceptionClass Class&lt;?&gt; - the class that this exception handler handles
+     * @param thisHandler ExceptionHandler - the handler itself
+     */
+    public void setHandler( Class&lt;?&gt; exceptionClass, ExceptionHandler thisHandler )
+    {
+<span class="fc" id="L44">        handlers.put( exceptionClass, thisHandler );</span>
+<span class="fc" id="L45">    };</span>
+    
+
+    @Override
+    public void handle( Throwable t )
+    {
+<span class="fc bfc" id="L51" title="All 2 branches covered.">        for( Iterator&lt;Entry&lt;Class&lt;?&gt;,ExceptionHandler&gt;&gt; i = handlers.entrySet().iterator() ; i.hasNext() ; )</span>
+        {
+<span class="fc" id="L53">            Entry&lt;Class&lt;?&gt;,ExceptionHandler&gt; thisEntry = i.next();</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">            if( thisEntry.getKey() == t.getClass() )</span>
+            {
+<span class="fc" id="L56">                thisEntry.getValue().handle( t ); </span>
+<span class="fc" id="L57">                return;</span>
+            }
+        }
+<span class="nc" id="L60">        dh.handle( t );</span>
+<span class="nc" id="L61">    }</span>
+
+
+    /**
+     * 
+     * Enables an application to override the default exception handler. The default handler simply turns an exception
+     * into an ApplicationException if it isn't already one, which is a runtime exception, and throws it.
+     * 
+     * @param eh ExceptionHandler - new default exception handler
+     */
+    public void setDefaultHandler( ExceptionHandler eh )
+    {
+<span class="nc" id="L73">        dh = eh;</span>
+<span class="nc" id="L74">    }</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>AllTests (1) (Jul 28, 2016 7:00:23 PM)</div></body></html>

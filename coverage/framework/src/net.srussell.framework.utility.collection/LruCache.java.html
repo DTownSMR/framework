@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>LruCache.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (Jul 28, 2016 7:00:23 PM)</a> &gt; <a href="../../index.html" class="el_group">GIT-dtownsmr-framework</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.srussell.framework.utility.collection</a> &gt; <span class="el_source">LruCache.java</span></div><h1>LruCache.java</h1><pre class="source lang-java linenums">/**
+ * (c) Copyright  Scott M. Russell.  2010
+ *     All rights reserved.
+ */
+
+package net.srussell.framework.utility.collection;
+
+import java.util.LinkedHashMap;
+import java.util.Map.Entry;
+
+import net.srussell.framework.singleton.Singleton;
+
+/**
+ * Least Recently Used (LRU) cache implementation.
+ * 
+ * This LRU is implemented as an extension of a LinkedHashMap which provides the vast majority of the implementation. 
+ * 
+ * This cache wrapper ensures capacity &amp;amp; access order is maintained. The super class is initialized to a certain capacity 
+ * and ordering mode is specified as access-order. 
+ */
+public class LruCache&lt;K, V&gt; extends LinkedHashMap&lt;K, V&gt; implements Singleton
+{
+    // generated unique serial version ID
+    private static final long serialVersionUID = -3578819126533760413L;
+
+    /**
+     * the configured max capacity of the cache
+     */
+    private int capacity;
+
+
+
+    /**
+     * base constructor
+     * 
+     * @param initialCapacity int - desired cache capacity
+     */
+    public LruCache( int initialCapacity )
+    {
+<span class="fc" id="L40">        super( initialCapacity + 1, 1.0f, true );</span>
+
+<span class="fc" id="L42">        setCapacity( initialCapacity );</span>
+<span class="fc" id="L43">    }</span>
+
+
+
+    /**
+     * ensure we don't blow capacity
+     * 
+     * @param Entry oldestOne - entry being processed
+     */
+    @Override
+    protected boolean removeEldestEntry( Entry oldestOne )
+    {
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        return ( size() &gt; getCapacity() );</span>
+    }
+
+
+
+    /**
+     * @return the capacity
+     */
+    private int getCapacity()
+    {
+<span class="fc" id="L65">        return capacity;</span>
+    }
+
+
+
+    /**
+     * @param capacity the capacity to set
+     */
+    private void setCapacity( int capacity )
+    {
+<span class="fc" id="L75">        this.capacity = capacity;</span>
+<span class="fc" id="L76">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>AllTests (1) (Jul 28, 2016 7:00:23 PM)</div></body></html>

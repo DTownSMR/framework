@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>AssessmentTest.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (Jul 28, 2016 7:00:23 PM)</a> &gt; <a href="../../index.html" class="el_group">GIT-dtownsmr-framework</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.srussell.framework.assessment</a> &gt; <span class="el_source">AssessmentTest.java</span></div><h1>AssessmentTest.java</h1><pre class="source lang-java linenums">/**
+ * (c) Copyright  Scott M. Russell.  2010
+ *     All rights reserved.
+ */
+
+package net.srussell.framework.assessment;
+
+import java.security.InvalidParameterException;
+import java.util.Date;
+
+import junit.framework.TestCase;
+import net.srussell.framework.logging.LogMgr;
+
+/**
+ * @version 1.0
+ * @author Scott Russell
+ * @since 1.0
+ *
+ * &lt;br&gt;&lt;br&gt;
+ * &lt;center&gt;
+ * &lt;a href=&quot;http://www.srussell.net&quot;&gt; Copyright &amp;copy; Scott M. Russell, 2010&lt;/a&gt;
+ * &lt;/center&gt;
+ */
+<span class="fc" id="L24">public class AssessmentTest extends TestCase implements AssessmentDeliverDelegate</span>
+{
+    // standard logging 
+<span class="fc" id="L27">    private static LogMgr logger = new LogMgr( &quot;net.srussell.framework.assessment.AssessmentTest&quot; );</span>
+
+    /*
+     * test constants
+     */
+    private static final String ASSESSMENT_PREFIX = &quot;[assessment] &quot;;
+<span class="fc" id="L33">    private static final String JUNIT_ASSESSMENT_TEXT = &quot;this message from JUnit test&quot;;</span>
+
+<span class="fc" id="L35">    Assessment ass = null;</span>
+<span class="fc" id="L36">    String builtMsg = null;</span>
+
+
+
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#setUp()
+     */
+    @Override
+    protected void setUp() throws Exception
+    {
+<span class="fc" id="L46">        super.setUp();</span>
+<span class="fc" id="L47">        ass = new Assessment( JUNIT_ASSESSMENT_TEXT );</span>
+<span class="fc" id="L48">        builtMsg = null;</span>
+<span class="fc" id="L49">    }</span>
+
+
+
+    public void testToString() throws Exception
+    {
+<span class="fc" id="L55">        assertEquals( &quot;toString() doesn't match&quot;, JUNIT_ASSESSMENT_TEXT, ass.toString() );</span>
+<span class="fc" id="L56">    }</span>
+
+
+
+    public void testBasicMsg() throws Exception
+    {
+<span class="fc" id="L62">        assertNotNull( &quot;message should exist when created with time stamp&quot;, ass.getAssessmentText() );</span>
+
+<span class="fc" id="L64">        ass = new Assessment( JUNIT_ASSESSMENT_TEXT, Assessment.NO_TIME_STAMP );</span>
+<span class="fc" id="L65">        assertNotNull( &quot;message should exist when created without time stamp&quot;, ass.getAssessmentText() );</span>
+
+<span class="fc" id="L67">        ass.deliver(); // not for JUnit testing (no way to verify stdout but useful for code coverage testing</span>
+<span class="fc" id="L68">    }</span>
+
+
+
+    public void testDefaultPrefix() throws Exception
+    {
+<span class="fc" id="L74">        ass = new Assessment( JUNIT_ASSESSMENT_TEXT, Assessment.NO_TIME_STAMP );</span>
+<span class="fc" id="L75">        assertTrue( &quot;prefix not correctly applied to assessment[&quot; + ass.buildAsseessment() + &quot;]&quot;, ass.buildAsseessment().startsWith( ASSESSMENT_PREFIX ) );</span>
+<span class="fc" id="L76">    }</span>
+
+
+
+    public void testBuildNoTimeStamp() throws Exception
+    {
+<span class="fc" id="L82">        ass = new Assessment( JUNIT_ASSESSMENT_TEXT, Assessment.NO_TIME_STAMP );</span>
+<span class="fc" id="L83">        assertEquals( &quot;assessment not assembled correctly&quot;, ASSESSMENT_PREFIX + JUNIT_ASSESSMENT_TEXT, ass.buildAsseessment() );</span>
+<span class="fc" id="L84">    }</span>
+
+
+
+    public void testBuildWithTimeStamp() throws Exception
+    {
+<span class="fc" id="L90">        Date assessmentDate = ass.getNow();</span>
+<span class="fc" id="L91">        assertEquals( &quot;assessment not assembled correctly&quot;, assessmentDate + &quot;: &quot; + ASSESSMENT_PREFIX + JUNIT_ASSESSMENT_TEXT, ass.buildAsseessment() );</span>
+<span class="fc" id="L92">    }</span>
+
+
+
+    public void testBuildWithDelegate() throws Exception
+    {
+<span class="fc" id="L98">        ass = new Assessment( JUNIT_ASSESSMENT_TEXT, this );</span>
+<span class="fc" id="L99">        ass.deliver();</span>
+<span class="fc" id="L100">        assertNotNull( &quot;no built msg&quot;, this.builtMsg );</span>
+
+<span class="fc" id="L102">        this.builtMsg = null;</span>
+<span class="fc" id="L103">        ass = new Assessment( JUNIT_ASSESSMENT_TEXT, this, false );</span>
+<span class="fc" id="L104">        ass.deliver();</span>
+<span class="fc" id="L105">        assertNotNull( &quot;no built msg&quot;, this.builtMsg );</span>
+
+<span class="fc" id="L107">    }</span>
+
+
+
+    public void testBadAssessmentText() throws Exception
+    {
+        try
+        {
+<span class="nc" id="L115">            ass = new Assessment( null );</span>
+<span class="nc" id="L116">            fail( &quot;should have thrown an exception&quot; );</span>
+<span class="nc" id="L117">        }</span>
+<span class="fc" id="L118">        catch( InvalidParameterException ipe )</span>
+        {
+            // we're OK with this}
+        }
+<span class="fc" id="L122">    }</span>
+
+
+
+    public void testBadDelegate() throws Exception
+    {
+        try
+        {
+<span class="nc" id="L130">            ass = new Assessment( &quot;delegate exception&quot;, null );</span>
+<span class="nc" id="L131">            fail( &quot;should have thrown an exception&quot; );</span>
+<span class="nc" id="L132">        }</span>
+<span class="fc" id="L133">        catch( InvalidParameterException ipe )</span>
+        {
+            // we're OK with this}
+        }
+<span class="fc" id="L137">    }</span>
+
+
+
+    public void testSettingTimeStamp() throws Exception
+    {
+<span class="fc" id="L143">        Date assessmentDate = ass.getNow();</span>
+<span class="fc" id="L144">        String assessmentWithDate = assessmentDate + &quot;: &quot; + ASSESSMENT_PREFIX + JUNIT_ASSESSMENT_TEXT;</span>
+<span class="fc" id="L145">        String assessmentNoDate = ASSESSMENT_PREFIX + JUNIT_ASSESSMENT_TEXT;</span>
+
+<span class="fc" id="L147">        assertEquals( &quot;assessment not assembled correctly&quot;, assessmentWithDate, ass.buildAsseessment() );</span>
+
+<span class="fc" id="L149">        ass.noTimeStamp();</span>
+<span class="fc" id="L150">        assertEquals( &quot;assessment not assembled correctly&quot;, assessmentNoDate, ass.buildAsseessment() );</span>
+
+<span class="fc" id="L152">        ass.useTimeStamp();</span>
+<span class="fc" id="L153">        assertEquals( &quot;assessment not assembled correctly&quot;, assessmentWithDate, ass.buildAsseessment() );</span>
+<span class="fc" id="L154">    }</span>
+
+
+
+    /* (non-Javadoc)
+     * @see net.srussell.framework.assessment.AssessmentDeliverDelegate#delegatedDeliver(net.srussell.framework.assessment.Assessment)
+     */
+    @Override
+    public void delegatedDeliver( Assessment assessment )
+    {
+<span class="fc" id="L164">        logger.entry( &quot;delegatedDeliver&quot; );</span>
+
+<span class="fc" id="L166">        this.builtMsg = assessment.buildAsseessment();</span>
+<span class="fc" id="L167">        logger.debug( &quot;delegatedDeliver&quot;, &quot;JUnit delegatedDeliver called for[&quot; + this.builtMsg + &quot;]&quot; );</span>
+
+<span class="fc" id="L169">        logger.exit( &quot;delegatedDeliver&quot; );</span>
+<span class="fc" id="L170">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>AllTests (1) (Jul 28, 2016 7:00:23 PM)</div></body></html>

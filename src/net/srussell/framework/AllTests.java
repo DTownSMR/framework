@@ -1,5 +1,5 @@
 /**
- * (c) Copyright  Scott M. Russell.  2010
+ * (c) Copyright  Scott M. Russell.  2010, 2016
  *     All rights reserved.
  */
 
@@ -23,6 +23,7 @@ public class AllTests
         TestSuite suite = new TestSuite( "Test for net.srussell.framework" );
         //$JUnit-BEGIN$
         suite.addTest( net.srussell.framework.assessment.AllTests.suite() );
+        suite.addTest( net.srussell.framework.exception.handler.AllTests.suite() );
         suite.addTest( net.srussell.framework.logging.AllTests.suite() );
         suite.addTest( net.srussell.framework.utility.io.AllTests.suite() );
         suite.addTest( net.srussell.framework.utility.string.AllTests.suite() );

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>HandlersWrapperTest.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (Jul 28, 2016 7:00:23 PM)</a> &gt; <a href="../../index.html" class="el_group">GIT-dtownsmr-framework</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.srussell.framework.exception.handler</a> &gt; <span class="el_source">HandlersWrapperTest.java</span></div><h1>HandlersWrapperTest.java</h1><pre class="source lang-java linenums">/**
+ * (c) Copyright Scott M. Russell 2016
+ */
+package net.srussell.framework.exception.handler;
+/*
+ * Created by: Scott Russell on Jul 28, 2016 5:04:40 PM for GIT-dtownsmr-framework::net.srussell.framework.exception.handler
+ */
+
+import junit.framework.TestCase;
+import net.srussell.framework.exception.ApplicationException;
+import net.srussell.framework.singleton.Singleton;
+import net.srussell.framework.singleton.SingletonFactoryFunctor;
+
+<span class="fc" id="L14">public class HandlersWrapperTest extends TestCase implements ExceptionHandler, SingletonFactoryFunctor</span>
+{
+    
+    Boolean isHandled;
+    Boolean madeFactory;
+
+    protected void setUp() throws Exception
+    {
+<span class="fc" id="L22">        super.setUp();</span>
+        
+<span class="fc" id="L24">        isHandled = false;</span>
+<span class="fc" id="L25">        madeFactory = false;</span>
+<span class="fc" id="L26">    }</span>
+
+
+
+    public void testInstance()
+    {
+<span class="fc" id="L32">        HandlersWrapper.instance().setHandler( ApplicationException.class, this );</span>
+<span class="fc" id="L33">        HandlersWrapper.instance().handle( new ApplicationException(&quot;YIKES!&quot;) );</span>
+<span class="fc" id="L34">        assertTrue(&quot;wasn't handled&quot;,isHandled);</span>
+<span class="fc" id="L35">    }</span>
+
+
+
+    public void testSetInstance()
+    {
+<span class="fc" id="L41">        ApplicationException ae = new ApplicationException(&quot;YIKES!&quot;);</span>
+<span class="fc" id="L42">        HandlersWrapper.instance().setHandler( ApplicationException.class, this );</span>
+<span class="fc" id="L43">        HandlersWrapper.instance().handle( ae );</span>
+<span class="fc" id="L44">        assertTrue(&quot;wasn't handled&quot;,isHandled);</span>
+        
+<span class="fc" id="L46">        isHandled = false;</span>
+<span class="fc" id="L47">        HandlersWrapper.setInstance( null );  // force a new instance so previously set handler will not be there</span>
+        
+        try
+        {
+<span class="nc" id="L51">            HandlersWrapper.instance().handle( ae );</span>
+<span class="nc" id="L52">            fail(&quot;handler was still set&quot;);</span>
+<span class="nc" id="L53">        }</span>
+<span class="fc" id="L54">        catch(ApplicationException ae2)</span>
+        {
+            
+<span class="fc" id="L57">            assertEquals(&quot;wrong exception&quot;, &quot;YIKES!&quot;, ae.getMessage()); // expected to land here   </span>
+<span class="fc" id="L58">            return; </span>
+        }
+<span class="nc" id="L60">    }</span>
+
+    public void testSetFactory()
+    {
+<span class="fc" id="L64">        ApplicationException ae = new ApplicationException(&quot;YIKES!&quot;);</span>
+<span class="fc" id="L65">        HandlersWrapper.setFactory( this );  // allow me to make the instance        </span>
+<span class="fc" id="L66">        HandlersWrapper.instance().setHandler( ApplicationException.class, this );</span>
+<span class="fc" id="L67">        HandlersWrapper.instance().handle( ae );</span>
+<span class="fc" id="L68">        assertTrue(&quot;wasn't handled&quot;, isHandled);</span>
+<span class="fc" id="L69">        assertTrue(&quot;not MY factory&quot;, madeFactory);        </span>
+<span class="fc" id="L70">    }</span>
+
+
+
+    @Override
+    public void handle( Throwable t )
+    {
+<span class="fc" id="L77">        isHandled = true;        </span>
+<span class="fc" id="L78">    }</span>
+
+
+
+    @Override
+    public Singleton makeInstance()
+    {
+<span class="fc" id="L85">        madeFactory = true;</span>
+<span class="fc" id="L86">        return new Handlers();</span>
+    }
+
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>AllTests (1) (Jul 28, 2016 7:00:23 PM)</div></body></html>

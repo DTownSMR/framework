@@ -24,7 +24,7 @@ public class AllTests
         suite.addTestSuite( EmailDeliveryTest.class );
         suite.addTestSuite( ExceptionAssessmentTest.class );
         
-        suite.addTestSuite( ExceptionAssessmentTest.class );
+        suite.addTestSuite( ExceptionAssessmentEmailTest.class );
         // $JUnit-END$
         return suite;
     }

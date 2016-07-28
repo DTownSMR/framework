@@ -36,8 +36,6 @@ public class EmailDeliveryTest extends TestCase
     /**
      * some public variables to facilitate other JUnit tests sending email assessments
      */
-    // use either 1 or 2 slashes in the next line to toggle code blocks
-    /*                      
     public static final String VALID_SMTP_SERVER = "?";
     public static final String TO_ADDRESS = "?";
     public static final String FROM_ADDRESS = "?";
@@ -47,17 +45,6 @@ public class EmailDeliveryTest extends TestCase
     // private test variables
     private static final String REPLY_TO_ADDRESS = "?";
     private static final String VALID_ADDRESS = "?";
-    /*/                      
-    public static final String VALID_SMTP_SERVER = "smtp.srussell.net";
-    public static final String TO_ADDRESS = "junit@srussell.net";
-    public static final String FROM_ADDRESS = "junit_from@srussell.net";
-    public static final String PASSWORD = "password";
-    public static final String PORT = "587";
-
-    // private test variables
-    private static final String REPLY_TO_ADDRESS = "junit_replyTo@srussell.net";
-    private static final String VALID_ADDRESS = "junit@srussell.net";
-    //*/                     
     
     // ---===>>> end of required configuration <<<===---
     
